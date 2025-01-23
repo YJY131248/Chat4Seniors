@@ -159,3 +159,7 @@ def main():
         task_type=eval_args.task_type
     )
     logger.info(f'Evaluation results: {evaluation_results}')
+
+
+if __name__ == "__main__":
+    main()
