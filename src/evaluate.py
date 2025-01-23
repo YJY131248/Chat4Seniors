@@ -110,7 +110,7 @@ def evaluate_model(
         args=training_args,
         eval_dataset=eval_dataset,
         tokenizer=tokenizer,
-        compute_metrics=compute_metrics(task_type),
+        compute_metrics=compute_metrics(tokenizer, task_type),
     )
 
     # Run evaluation
