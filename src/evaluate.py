@@ -84,6 +84,7 @@ def evaluate_model(
     tokenizer: AutoTokenizer,
     eval_dataset,
     train_args: TrainingArguments,
+    max_length: int = 1024,
     task_type: str = "classification"
 ) -> Dict[str, float]:
     """
@@ -101,7 +102,7 @@ def evaluate_model(
     data_collator = DataCollatorForSeq2Seq(
         tokenizer=tokenizer,
         padding=True, 
-        max_length=tokenizer.model_max_length
+        max_length=max_length
     )
 
     # Initialize Trainer
@@ -157,6 +158,7 @@ def main():
         model=llm_model,
         tokenizer=llm_tokenizer,
         train_args=train_args,
+        max_length=eval_args.max_length,
         eval_dataset=tokenizer_dataset["test"],
         task_type=eval_args.task_type
     )
