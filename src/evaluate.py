@@ -10,7 +10,8 @@ from transformers import (
     AutoTokenizer, 
     Trainer, 
     HfArgumentParser, 
-    TrainingArguments
+    TrainingArguments,
+    DataCollatorForSeq2Seq
 )
 from sklearn.metrics import classification_report
 from data_utils import get_tokenizer_dataset
@@ -82,8 +83,8 @@ def evaluate_model(
     model: Union[AutoModelForCausalLM, AutoModel],
     tokenizer: AutoTokenizer,
     eval_dataset,
-    task_type: str = "classification",
-    device: str = "cuda"
+    train_args: TrainingArguments,
+    task_type: str = "classification"
 ) -> Dict[str, float]:
     """
     Evaluate model performance using Trainer.
@@ -96,36 +97,36 @@ def evaluate_model(
     Returns:
         Dictionary containing evaluation metrics
     """
-    # Set up training arguments (only for evaluation)
-    training_args = TrainingArguments(
-        output_dir="./eval_results",
-        per_device_eval_batch_size=8,
-        no_cuda=(device == "cpu"),
-        report_to="none",  # Disable logging to external services
+    # Initialize DataCollatorForSeq2Seq
+    data_collator = DataCollatorForSeq2Seq(
+        tokenizer=tokenizer,
+        padding=True, 
+        max_length=tokenizer.model_max_length
     )
 
     # Initialize Trainer
     trainer = Trainer(
         model=model,
-        args=training_args,
+        args=train_args,
         eval_dataset=eval_dataset,
         tokenizer=tokenizer,
         compute_metrics=compute_metrics(tokenizer, task_type),
+        data_collator=data_collator
     )
 
     # Run evaluation
     eval_results = trainer.evaluate()
     return eval_results
-    
+
 
 def main():
     # ignore warnings
     warnings.filterwarnings("ignore")
 
     # load arguments
-    eval_args = HfArgumentParser(
-        (EvalArguments)
-    ).parse_args_into_dataclasses()[0]
+    eval_args, train_args = HfArgumentParser(
+        (EvalArguments, TrainingArguments)
+    ).parse_args_into_dataclasses()
 
     # set up logging
     logging.basicConfig(
@@ -155,6 +156,7 @@ def main():
     evaluation_results = evaluate_model(
         model=llm_model,
         tokenizer=llm_tokenizer,
+        train_args=train_args,
         eval_dataset=tokenizer_dataset["test"],
         task_type=eval_args.task_type
     )
