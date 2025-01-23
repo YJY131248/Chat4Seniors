@@ -35,7 +35,8 @@ class FinetuneArguments:
     dataset_path: str = field(default="../data/alpaca_gpt4_data_zh.json")
     log_path: str = field(default="../log/lora_output.log")
     max_length: int = field(default=1024)
-    lora_rank: int = field(default=8)
+    lora_rank: int = field(default=16)
+    lora_alpha: int = field(default=32)
 
 
 # Load LLM model and tokenizer
@@ -97,7 +98,7 @@ def get_peft_config(peft_type, tokenizer, finetune_args):
             target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
             inference_mode=False,
             r=finetune_args.lora_rank,
-            lora_alpha=32,
+            lora_alpha=finetune_args.lora_alpha,
             lora_dropout=0.1,
         )
     elif peft_type == "p-tuning":
