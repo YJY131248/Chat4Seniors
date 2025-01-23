@@ -1,7 +1,7 @@
 mlx worker launch -- python3 ./src/finetune.py \
     --peft_type lora \
     --llm_model_name Qwen \
-    --llm_model_path ../model/Qwen2-7B-Instruct \
+    --llm_model_path ../model/qwen2.5-7b-instruct \
     --dataset_path ../data/trainset/car_sft_trainset.json \
     --log_path ../log/car_sft_lora.log \
     --max_length 1024 \
