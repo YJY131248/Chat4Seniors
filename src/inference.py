@@ -7,7 +7,7 @@ from transformers import (
     AutoModelForCausalLM, 
     HfArgumentParser
 )
-from peft import PeftModel, PeftModelForCausalLM
+from peft import PeftModelForCausalLM
 from dataclasses import dataclass, field
 from finetune import get_llm_model_tokenizer
 
@@ -49,7 +49,7 @@ def get_peft_llm_model_tokenizer(inference_args):
         else:
             logger.error("Invalid model: Supported models are Qwen, ChatGLM, BaiChuan")
             raise ValueError("Invalid model: Supported models are Qwen, ChatGLM, BaiChuan")
-        
+
         # set the model parameters
         model.gradient_checkpointing_enable()
         model.enable_input_require_grads()
@@ -60,12 +60,12 @@ def get_peft_llm_model_tokenizer(inference_args):
         if inference_args.peft_type != "lora":
             model = PeftModelForCausalLM.from_pretrained(model, model_id=peft_model_path)
         tokenizer = AutoTokenizer.from_pretrained(peft_model_path)
-    
+
     else:
         model, tokenizer = get_llm_model_tokenizer(inference_args)
 
     return model, tokenizer
-    
+
 
 def get_llm_response(query_list: list[str], inference_args):
     # load the LLM model and tokenizer
@@ -102,15 +102,15 @@ def get_llm_response(query_list: list[str], inference_args):
 
 
 def main():
-    # 忽略警告
+    # ignore warnings
     warnings.filterwarnings("ignore")
 
-    # 加载命令行参数
+    # load arguments
     inference_args = HfArgumentParser(
         (InferenceArguments)
     ).parse_args_into_dataclasses()[0]
 
-    # 设置logger
+    # set logger
     logging.basicConfig(
         level=logging.DEBUG,
         filename=inference_args.log_path,
@@ -119,7 +119,7 @@ def main():
     )
     global logger
     logger = logging.getLogger(__name__)
-    logger.debug("命令行参数")
+    logger.debug("Arguments: ")
     logger.debug("inference_args:")
     logger.debug(inference_args.__repr__())
 

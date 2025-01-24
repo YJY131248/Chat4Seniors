@@ -98,13 +98,6 @@ def evaluate_model(
     Returns:
         Dictionary containing evaluation metrics
     """
-    # Initialize DataCollatorForSeq2Seq
-    data_collator = DataCollatorForSeq2Seq(
-        tokenizer=tokenizer,
-        padding=True, 
-        max_length=max_length
-    )
-
     # Initialize Trainer
     trainer = Trainer(
         model=model,
@@ -112,9 +105,8 @@ def evaluate_model(
         eval_dataset=eval_dataset,
         tokenizer=tokenizer,
         compute_metrics=compute_metrics(tokenizer, task_type),
-        data_collator=data_collator
+        data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True)
     )
-
     # Run evaluation
     eval_results = trainer.evaluate()
     return eval_results
