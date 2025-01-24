@@ -1,7 +1,6 @@
 import torch
 import logging
 import warnings
-import numpy as np
 from transformers import (
     AutoTokenizer, 
     AutoModel, 
@@ -67,7 +66,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
         else:
             logger.error("Invalid model: Supported models are Qwen, ChatGLM, BaiChuan")
             raise ValueError("Invalid model: Supported models are Qwen, ChatGLM, BaiChuan")
-        
+
         if peft_type != "prefix-tuning":
             model.gradient_checkpointing_enable()
         model.enable_input_require_grads()
@@ -76,7 +75,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
 
         tokenizer = AutoTokenizer.from_pretrained(llm_model_path)
         return model, tokenizer
-    
+
     except Exception as e:
         logger.error(f"Error loading model: {e}")
         raise e
