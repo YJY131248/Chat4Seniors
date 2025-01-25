@@ -1,23 +1,16 @@
 import logging
 import warnings
 import numpy as np
-import evaluate
-from typing import Dict, Union
+from nltk.translate.bleu_score import corpus_bleu
+from nltk.translate.meteor_score import meteor_score
+from rouge_score import rouge_scorer
+from bert_score import score
+from typing import List
 from dataclasses import dataclass, field
-from transformers import (
-    AutoModel, 
-    AutoModelForCausalLM,
-    AutoTokenizer, 
-    Trainer, 
-    HfArgumentParser, 
-    TrainingArguments,
-    DataCollatorForSeq2Seq
-)
+from transformers import HfArgumentParser
 from sklearn.metrics import classification_report
-from data_utils import get_tokenizer_dataset
-from finetune import get_llm_model_tokenizer
-from data_utils import get_alpaca_dataset, get_tokenizer_dataset
-
+from data_utils import get_alpaca_dataset
+from inference import get_peft_llm_model_tokenizer, get_llm_response
 
 # set merge model arguments
 @dataclass
@@ -26,100 +19,90 @@ class EvalArguments:
     task_type: str = field(default="classification")
     llm_model_name: str = field(default="Qwen")
     llm_model_path: str = field(default="../model/car_lora_qwen2.5_7b")
+    peft_model_path: str = field(default="../out/car_lora_model/checkpoint-3000/")
     dataset_path: str = field(default="../data/trainset/car_sft_dataset.json")
     log_path: str = field(default="../log/car_model_eval.log")
-    max_length: int = field(default=1024)
-
+    use_peft_model: bool = field(default=False)
+    max_new_tokens: int = field(default=1024)
+    do_sample: bool = field(default=False)
+    top_p: float = field(default=0.1)
+    temperature: float = field(default=0.1)
+    repetition_penalty: float = field(default=1.2)
 
 # Custom compute_metrics function for classification and QA tasks
-def compute_metrics(tokenizer, task_type: str):
-    def fn(eval_pred):
-        predictions, labels = eval_pred
-        # Classification task
-        if task_type == "classification":
-            preds = np.argmax(predictions, axis=-1)
-            report = classification_report(labels, preds, output_dict=True, digits=4)
-            return {
-                "classification_report": report
-            }
+def compute_metrics(
+    preds: List[str],
+    labels: List[str],
+    task_type: str
+):
+    # Classification task
+    if task_type == "classification":
+        # Convert labels  str to int
+        preds = [int(pred) for pred in preds]
+        labels = [int(label) for label in labels]
+        print(classification_report(labels, preds, digits=4))
+        report = classification_report(labels, preds, output_dict=True, digits=4)
+        return {
+            "classification_report": report
+        }
 
-        # QA task
-        elif task_type == "qa":
-            bleu = evaluate.load('bleu')
-            rouge = evaluate.load('rouge')
-            meteor = evaluate.load('meteor')
-            bertscore = evaluate.load('bertscore')
+    # QA task
+    elif task_type == "qa":
+        # Filter out empty strings
+        preds = [p if p else " " for p in preds]
+        refs = [[r if r else " "] for r in labels]
 
-            # Decode predictions and labels
-            preds = [tokenizer.decode(pred, skip_special_tokens=True) for pred in predictions]
-            refs = [tokenizer.decode(label, skip_special_tokens=True) for label in labels]
+        # BLEU Score Calculation
+        bleu_score = corpus_bleu(refs, preds)
 
-            # Filter out empty strings
-            preds = [p if p else " " for p in preds]
-            refs = [[r if r else " "] for r in refs]
+        # ROUGE Score Calculation
+        rough_scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
+        rouge_scores = {
+            'rouge1': [],
+            'rouge2': [],
+            'rougeL': []
+        }
+        for r, p in zip(refs, preds):
+            scores = rough_scorer.score(r[0], p)
+            rouge_scores['rouge1'].append(scores['rouge1'].fmeasure)
+            rouge_scores['rouge2'].append(scores['rouge2'].fmeasure)
+            rouge_scores['rougeL'].append(scores['rougeL'].fmeasure)
+        rouge1_score = np.mean(rouge_scores['rouge1'])
+        rouge2_score = np.mean(rouge_scores['rouge2'])
+        rougeL_score = np.mean(rouge_scores['rougeL'])
 
-            # Compute metrics
-            bleu_score = bleu.compute(predictions=preds, references=refs)
-            rouge_scores = rouge.compute(predictions=preds, references=refs)
-            meteor_score = meteor.compute(predictions=preds, references=refs)
-            bert_score = bertscore.compute(predictions=preds, references=refs, lang="en")
+        # METEOR Score Calculation
+        meteor_scores = [meteor_score([r[0]], p) for r, p in zip(refs, preds)]
+        meteor_score_mean = np.mean(meteor_scores)
 
-            return {
-                "bleu": bleu_score["bleu"],
-                "rouge1": rouge_scores["rouge1"],
-                "rouge2": rouge_scores["rouge2"],
-                "rougeL": rouge_scores["rougeL"],
-                "meteor": meteor_score["meteor"],
-                "bert_score_f1": np.mean(bert_score["f1"]),
-            }
+        # BERTScore Calculation
+        P, R, F1 = score(preds, [r[0] for r in refs], lang="en")
+        bert_score_precision = np.mean(P)
+        bert_score_recall = np.mean(R)
+        bert_score_f1 = np.mean(F1)
 
-        else:
-            raise ValueError("Task type must be either 'classification' or 'qa'")
-    return fn
+        return {
+            "bleu": bleu_score / 100,
+            "rouge1": rouge1_score,
+            "rouge2": rouge2_score,
+            "rougeL": rougeL_score,
+            "meteor": meteor_score_mean,
+            "bert_score_precision": bert_score_precision,
+            "bert_score_recall": bert_score_recall,
+            "bert_score_f1": bert_score_f1,
+        }
 
-
-# Evaluate function using Trainer
-def evaluate_model(
-    model: Union[AutoModelForCausalLM, AutoModel],
-    tokenizer: AutoTokenizer,
-    eval_dataset,
-    train_args: TrainingArguments,
-    max_length: int = 1024,
-    task_type: str = "classification"
-) -> Dict[str, float]:
-    """
-    Evaluate model performance using Trainer.
-    Args:
-        model: Fine-tuned LLM model
-        tokenizer: Associated tokenizer
-        eval_dataset: Evaluation dataset (Hugging Face Dataset)
-        task_type: 'classification' or 'qa'
-        device: Computing device
-    Returns:
-        Dictionary containing evaluation metrics
-    """
-    # Initialize Trainer
-    trainer = Trainer(
-        model=model,
-        args=train_args,
-        eval_dataset=eval_dataset,
-        tokenizer=tokenizer,
-        compute_metrics=compute_metrics(tokenizer, task_type),
-        data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True)
-    )
-    # Run evaluation
-    eval_results = trainer.evaluate()
-    return eval_results
-
+    else:
+        raise ValueError("Task type must be either 'classification' or 'qa'")
 
 def main():
     # ignore warnings
     warnings.filterwarnings("ignore")
 
     # load arguments
-    eval_args, train_args = HfArgumentParser(
-        (EvalArguments, TrainingArguments)
-    ).parse_args_into_dataclasses()
+    eval_args = HfArgumentParser(
+        (EvalArguments)
+    ).parse_args_into_dataclasses()[0]
 
     # set up logging
     logging.basicConfig(
@@ -134,28 +117,46 @@ def main():
     logger.debug("eval_args:")
     logger.debug(eval_args.__repr__())
 
-    # load the base LLM model and tokenizer
-    llm_model, llm_tokenizer = get_llm_model_tokenizer(eval_args.llm_model_name, eval_args.llm_model_path, eval_args.peft_type)
-    logger.info('Base LLMs {} load successfully! LLM path::: {}'.format(eval_args.llm_model_name, eval_args.llm_model_path))
-
     # load the dataset and tokenizer dataset
     dataset = get_alpaca_dataset(eval_args.dataset_path, test_size=0.1)
+    dataset = dataset['test']
     logger.info('dataset build successfully!')
-    tokenizer_dataset = get_tokenizer_dataset(dataset, llm_tokenizer, max_length=eval_args.max_length)
-    logger.info('tokenizer dataset build successfully!')
 
-    # evaluate the model
-    logger.info('Evaluate start!')
-    evaluation_results = evaluate_model(
-        model=llm_model,
-        tokenizer=llm_tokenizer,
-        train_args=train_args,
-        max_length=eval_args.max_length,
-        eval_dataset=tokenizer_dataset["test"],
-        task_type=eval_args.task_type
+    # get llm resp
+    # load model
+    llm_model, llm_tokenizer = get_peft_llm_model_tokenizer(
+        eval_args.llm_model_name,
+        eval_args.llm_model_path,
+        eval_args.peft_model_path,
+        eval_args.peft_type,
+        eval_args.use_peft_model
     )
-    logger.info(f'Evaluation results: {evaluation_results}')
+    logger.info('LLMs {} load successfully! LLM path::: {}'.format(eval_args.llm_model_name, eval_args.llm_model_path))
 
+    # get llm resp
+    query_list = [sample['instruction'] for sample in dataset]
+    llm_response_mp = get_llm_response(
+        query_list=query_list,
+        model = llm_model,
+        tokenizer = llm_tokenizer,
+        max_new_tokens=eval_args.max_new_tokens,
+        top_p=eval_args.top_p,
+        temperature=eval_args.temperature,
+        repetition_penalty=eval_args.repetition_penalty,
+        do_sample=eval_args.do_sample
+    )
+    preds = [llm_response_mp[query] for query in query_list]
+    labels = [sample['output'] for sample in dataset]
+
+    # eval
+    eval_metrics = compute_metrics(
+        preds=preds,
+        labels=labels,
+        task_type=eval_args.task_type,
+    )
+    print(eval_metrics)
+    logger.info('eval metrics: {}'.format(eval_metrics))
+    logger.info('eval done!')
 
 if __name__ == "__main__":
     main()

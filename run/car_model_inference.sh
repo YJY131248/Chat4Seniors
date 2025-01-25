@@ -1,7 +1,11 @@
 mlx worker launch -- python3 ../src/inference.py \
     --llm_model_name Qwen \
-    --llm_model_path ../model/qwen2.5-7b-instruct \
+    --llm_model_path ../model/car_lora_qwen2.5_7b \
     --peft_type lora \
-    --merge_save_path ../model/car_lora_model/ \
-    --use_merge_model True \
-    --log_path ../out/car_model_inference.log
+    --use_peft_model True \
+    --log_path ../log/car_model_inference.log \
+    --max_new_tokens 10 \
+    --do_sample False \
+    --top_p 0.1 \
+    --temperature 0.1 \
+    --repetition_penalty 1.2

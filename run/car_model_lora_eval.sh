@@ -1,15 +1,13 @@
-mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- python3 ../src/evaluate.py \
+mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- python3 ../src/eval.py \
     --peft_type lora \
     --task_type classification \
     --llm_model_name Qwen \
     --llm_model_path ../model/car_lora_qwen2.5_7b \
     --dataset_path ../data/trainset/car_sft_dataset.json \
     --log_path ../log/car_model_eval.log \
-    --max_length 1024 \
-    --output_dir ../out/car_lora_model/eval_res \
-    --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 2 \
-    --eval_accumulation_steps 1\
-    --no_cuda False \
-    --report_to none \
-    --fp16 True
+    --use_peft_model True \
+    --max_new_tokens 10 \
+    --do_sample False \
+    --top_p 0.1 \
+    --temperature 0.1 \
+    --repetition_penalty 1.2 \
