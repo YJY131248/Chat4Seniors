@@ -1,4 +1,4 @@
-mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- python3 ../src/eval.py \
+mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- python3 ../src/evaluate.py \
     --peft_type lora \
     --task_type classification \
     --llm_model_name Qwen \
