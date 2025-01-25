@@ -72,14 +72,14 @@ def compute_metrics(
         rougeL_score = np.mean(rouge_scores['rougeL'])
 
         # METEOR Score Calculation
-        meteor_scores = [meteor_score([r[0]], p) for r, p in zip(refs, preds)]
+        meteor_scores = [meteor_score([r[0].split()], p.split()) for r, p in zip(refs, preds)]
         meteor_score_mean = np.mean(meteor_scores)
 
         # BERTScore Calculation
-        P, R, F1 = score(preds, [r[0] for r in refs], lang="en")
-        bert_score_precision = np.mean(P)
-        bert_score_recall = np.mean(R)
-        bert_score_f1 = np.mean(F1)
+        P, R, F1 = score(preds, [r[0] for r in refs], model_type="../model/roberta-large", num_layers=17, lang="en")
+        bert_score_precision = np.mean(P.numpy())
+        bert_score_recall = np.mean(R.numpy())
+        bert_score_f1 = np.mean(F1.numpy())
 
         return {
             "bleu": bleu_score / 100,
