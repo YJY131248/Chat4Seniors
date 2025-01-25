@@ -6,7 +6,6 @@ from tqdm import tqdm
 from transformers import AutoTokenizer
 from datasets import load_dataset
 
-
 def preprocess_text(text):
     text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)
     text = re.sub(r'[^\x00-\x7F]+', '', text)
@@ -14,7 +13,6 @@ def preprocess_text(text):
     text = text.lower()
     text = text.strip()
     return text
-
 
 def get_alpaca_dataset(json_path: str, test_size: float=0.1):
     dataset = load_dataset(
@@ -25,14 +23,13 @@ def get_alpaca_dataset(json_path: str, test_size: float=0.1):
     dataset = dataset.train_test_split(test_size=test_size, seed=777)
     return dataset
 
-
 def get_tokenizer_dataset(
-        dataset, 
-        tokenizer,
-        max_length: int=256,
-        json_path: str="",
-        tokenizer_path: str="",
-    ):
+    dataset, 
+    tokenizer,
+    max_length: int=256,
+    json_path: str="",
+    tokenizer_path: str="",
+):
 
     def process_sample(sample):
         input_ids, attention_mask, labels = [], [], []

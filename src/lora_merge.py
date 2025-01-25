@@ -5,7 +5,6 @@ from transformers import HfArgumentParser
 from dataclasses import dataclass, field
 from finetune import get_llm_model_tokenizer
 
-
 # set merge model arguments
 @dataclass
 class MergeModelArguments:
@@ -15,7 +14,6 @@ class MergeModelArguments:
     peft_checkpoint_path: str = field(default="../out/car_lora_model/checkpoint-3000/")
     merge_save_path: str = field(default="../model/car_lora_qwen2.5_7b")
     log_path: str = field(default="../log/car_lora_merge.log")
-
 
 def main():
     # ignore warnings
@@ -35,7 +33,7 @@ def main():
     )
     global logger
     logger = logging.getLogger(__name__)
-    logger.debug("命令行参数")
+    logger.debug("Arguments:")
     logger.debug("merge_model_args:")
     logger.debug(merge_model_args.__repr__())
 
@@ -65,7 +63,6 @@ def main():
         merge_model_args.peft_checkpoint_path, 
         merge_model_args.merge_save_path)
     )
-
 
 if __name__ == "__main__":
     main()

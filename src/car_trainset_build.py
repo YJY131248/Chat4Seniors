@@ -22,11 +22,9 @@ def alzheimer_dataset_predeal(ipt_path: str, opt_path: str):
                 writer.writerow([content, label])
     print("alzheimer dataset has saved in the path:::{}".format(opt_path))
 
-
 def car_prompt_build(content):
     car_prompt = PROMPT.replace("[User's text input]", content)
     return car_prompt
-
 
 def sft_trainset_build(ipt_path: str, opt_path: str):
     # Read the dataset
@@ -46,7 +44,6 @@ def sft_trainset_build(ipt_path: str, opt_path: str):
     # Save the dataset
     with open(opt_path, 'w', encoding='utf-8') as json_file:
         json.dump(save_json, json_file, ensure_ascii=True, indent=4)
-
 
 if __name__ == "__main__":
     # alzheimer dataset predeal

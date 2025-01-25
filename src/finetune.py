@@ -24,7 +24,6 @@ from typing import Dict, Union
 from dataclasses import dataclass, field
 from data_utils import get_alpaca_dataset, get_tokenizer_dataset
 
-
 # Define the fine-tuning argument class
 @dataclass
 class FinetuneArguments:
@@ -36,7 +35,6 @@ class FinetuneArguments:
     max_length: int = field(default=1024)
     lora_rank: int = field(default=16)
     lora_alpha: int = field(default=32)
-
 
 # Load LLM model and tokenizer
 def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
@@ -66,7 +64,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
         else:
             logger.error("Invalid model: Supported models are Qwen, ChatGLM, BaiChuan")
             raise ValueError("Invalid model: Supported models are Qwen, ChatGLM, BaiChuan")
-
+        
         if peft_type != "prefix-tuning":
             model.gradient_checkpointing_enable()
         model.enable_input_require_grads()
@@ -75,11 +73,10 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
 
         tokenizer = AutoTokenizer.from_pretrained(llm_model_path)
         return model, tokenizer
-
+    
     except Exception as e:
         logger.error(f"Error loading model: {e}")
         raise e
-
 
 # Configure PEFT
 def get_peft_config(peft_type, tokenizer, finetune_args):
@@ -125,7 +122,6 @@ def get_peft_config(peft_type, tokenizer, finetune_args):
         logger.error("Invalid PEFT type: Must be lora, p-tuning, prefix-tuning, or prompt-tuning")
         raise ValueError("Invalid PEFT type")
 
-
 # Training function
 def finetune_train(
     model: Union[AutoModelForCausalLM, AutoModel],
@@ -151,7 +147,6 @@ def finetune_train(
         data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True)
     )
     trainer.train()
-
 
 def main():
     # ignore warnings
@@ -201,7 +196,6 @@ def main():
         train_args=training_args
     )
     logger.info('Train end! LoRA model saves in the path:::{}'.format(training_args.output_dir))
-
 
 if __name__ == "__main__":
     main()
