@@ -3,14 +3,14 @@ mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- p
     --llm_model_name Qwen \
     --llm_model_path ../model/qwen2.5-7b-instruct \
     --dataset_path ../data/trainset/car_sft_dataset.json \
-    --log_path ../log/car_sft_lora.log \
+    --log_path ../log/car_qwen_lora_model_finetune.log \
     --max_length 1024 \
     --lora_rank 16 \
     --lora_alpha 32 \
-    --output_dir ../out/car_lora_model \
+    --output_dir ../out/car_qwen_lora_model \
     --per_device_train_batch_size 8 \
     --per_device_eval_batch_size 8 \
-    --num_train_epochs 5 \
+    --num_train_epochs 3 \
     --learning_rate 5e-5 \
     --save_steps 100 \
     --save_total_limit 10 \

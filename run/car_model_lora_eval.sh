@@ -2,9 +2,10 @@ mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- p
     --peft_type lora \
     --task_type classification \
     --llm_model_name Qwen \
-    --llm_model_path ../model/car_lora_qwen2.5_7b \
+    --llm_model_path ../model/car_lora_model \
     --dataset_path ../data/trainset/car_sft_dataset.json \
-    --log_path ../log/car_model_eval.log \
+    --save_eval_res_path ../out/car_qwen_lora_model/eval_res/eval_res.csv \
+    --log_path ../log/car_qwen_lora_model_eval.log \
     --use_peft_model True \
     --max_new_tokens 10 \
     --do_sample False \

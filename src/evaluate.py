@@ -21,6 +21,7 @@ class EvalArguments:
     llm_model_path: str = field(default="../model/car_lora_qwen2.5_7b")
     peft_model_path: str = field(default="../out/car_lora_model/checkpoint-3000/")
     dataset_path: str = field(default="../data/trainset/car_sft_dataset.json")
+    save_eval_res_path: str = field(default="../out/car_qwen_lora_model/eval_res/eval_res.csv")
     log_path: str = field(default="../log/car_model_eval.log")
     use_peft_model: bool = field(default=False)
     max_new_tokens: int = field(default=1024)
@@ -147,7 +148,13 @@ def main():
     )
     preds = [llm_response_mp[query] for query in query_list]
     labels = [sample['output'] for sample in dataset]
-
+    
+    # save preds and labels
+    with open(eval_args.save_eval_res_path, 'w') as f:
+        for pred, label in zip(preds, labels):
+            f.write(pred + '\n')
+            f.write(label + '\n')
+    
     # eval
     eval_metrics = compute_metrics(
         preds=preds,
