@@ -39,6 +39,8 @@ def compute_metrics(
     # Classification task
     if task_type == "classification":
         # Convert labels  str to int
+        print(preds)
+        print(labels)
         preds = [int(pred) for pred in preds]
         labels = [int(label) for label in labels]
         print(classification_report(labels, preds, digits=4))
@@ -151,9 +153,9 @@ def main():
     
     # save preds and labels
     with open(eval_args.save_eval_res_path, 'w') as f:
+        f.write('pred,label\n')
         for pred, label in zip(preds, labels):
-            f.write(pred + '\n')
-            f.write(label + '\n')
+            f.write(pred + ',' + label + '\n')
     
     # eval
     eval_metrics = compute_metrics(
