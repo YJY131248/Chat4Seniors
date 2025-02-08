@@ -17,6 +17,8 @@ def alzheimer_dataset_predeal(ipt_path: str, opt_path: str):
         for line in tqdm(lines):
             parts = line.strip().split('\t')
             label = str(parts[1])
+            if label == "3":
+                label = "2"
             content = preprocess_text(parts[2])
             if parts[0] == 'alzheimer':
                 writer.writerow([content, label])
