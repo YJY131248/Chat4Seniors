@@ -39,8 +39,6 @@ def compute_metrics(
     # Classification task
     if task_type == "classification":
         # Convert labels  str to int
-        print(preds)
-        print(labels)
         preds = [int(pred) for pred in preds]
         labels = [int(label) for label in labels]
         print(classification_report(labels, preds, digits=4))
@@ -150,6 +148,8 @@ def main():
     )
     preds = [llm_response_mp[query] for query in query_list]
     labels = [sample['output'] for sample in dataset]
+    logger.info('LLMs {} get response successfully!'.format(eval_args.llm_model_name))
+    logger.info('pred::: {}\nlabels::: {}'.format(preds, labels))
     
     # save preds and labels
     with open(eval_args.save_eval_res_path, 'w') as f:
