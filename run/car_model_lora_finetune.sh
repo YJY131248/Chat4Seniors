@@ -11,9 +11,9 @@ mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- p
     --per_device_train_batch_size 8 \
     --per_device_eval_batch_size 8 \
     --num_train_epochs 5 \
-    --learning_rate 1e-5 \
+    --learning_rate 3e-5 \
     --save_steps 100 \
-    --save_total_limit 10 \
+    --save_total_limit 15 \
     --logging_steps 10 \
     --gradient_accumulation_steps 1 \
     --warmup_steps 30
