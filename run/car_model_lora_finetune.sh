@@ -5,8 +5,8 @@ mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- p
     --dataset_path ../data/trainset/car_sft_dataset.json \
     --log_path ../log/car_qwen_lora_model_finetune.log \
     --max_length 1024 \
-    --lora_rank 8 \
-    --lora_alpha 16 \
+    --lora_rank 16 \
+    --lora_alpha 32 \
     --output_dir ../out/car_qwen_lora_model \
     --per_device_train_batch_size 8 \
     --per_device_eval_batch_size 8 \
