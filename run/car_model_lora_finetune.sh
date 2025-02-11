@@ -1,4 +1,4 @@
-mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- torchrun --nproc_per_node=4 --master_port=29501 ../src/finetune.py \
+mlx worker launch --gpu=4 --cpu=20 --memory=200 --type=Tesla-V100-SXM2-32GB -- torchrun --nproc_per_node=4 --master_port=29501 ../src/finetune.py \
     --peft_type lora \
     --llm_model_name Qwen \
     --llm_model_path ../model/qwen2.5-7b-instruct \
