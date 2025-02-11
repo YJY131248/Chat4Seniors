@@ -12,3 +12,4 @@ model/qwen2.5-7b-instruct/model.safetensors.index.json
 model/qwen2.5-7b-instruct/tokenizer_config.json
 model/qwen2.5-7b-instruct/tokenizer.json
 model/qwen2.5-7b-instruct/vocab.json
+model/roberta-large
