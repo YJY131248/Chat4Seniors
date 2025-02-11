@@ -1,8 +1,5 @@
-import csv
 import re
 import string
-import pandas as pd
-from tqdm import tqdm
 from transformers import AutoTokenizer
 from datasets import load_dataset
 
@@ -20,7 +17,7 @@ def get_alpaca_dataset(json_path: str, test_size: float=0.1):
         data_files=json_path,
         split="train"
     )
-    dataset = dataset.train_test_split(test_size=test_size, seed=777)
+    dataset = dataset.train_test_split(test_size=test_size, seed=42)
     return dataset
 
 def get_tokenizer_dataset(
@@ -59,12 +56,12 @@ def get_tokenizer_dataset(
         if json_path != "":
             dataset = get_alpaca_dataset(json_path=json_path, test_size=0.1)
         else:
-            raise ValueError("错误参数：dataset不能为空")
+            raise ValueError("error：dataset is None")
 
     if tokenizer is None:
         if tokenizer_path != "":
             tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
         else:
-            raise ValueError("错误参数：tokenizer不能为空")
+            raise ValueError("error：tokenizer is none")
         
     return dataset.map(process_sample, remove_columns=dataset['train'].column_names)

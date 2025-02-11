@@ -159,7 +159,7 @@ def main():
 
     # set up logging
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         filename=finetune_args.log_path,
         datefmt='%Y/%m/%d %H:%M:%S',
         format='%(asctime)s - %(name)s - %(levelname)s - %(lineno)d - %(module)s - %(message)s'
