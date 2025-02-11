@@ -9,14 +9,14 @@ mlx worker launch --gpu=4 --cpu=20 --memory=200 --type=Tesla-V100-SXM2-32GB -- t
     --lora_alpha 16 \
     --output_dir ../out/car_qwen_lora_model \
     --per_device_train_batch_size 8 \
-    --per_device_eval_batch_size 8 \
     --num_train_epochs 5 \
-    --learning_rate 5e-5 \
+    --learning_rate 1e-4 \
+    --lr_scheduler_type cosine \
     --save_steps 100 \
     --save_total_limit 10 \
     --logging_steps 10 \
     --gradient_accumulation_steps 1 \
-    --warmup_ratio 0.1 \
+    --warmup_ratio 0.05 \
     --fp16 \
     --ddp_find_unused_parameters False \
     --gradient_checkpointing True \
