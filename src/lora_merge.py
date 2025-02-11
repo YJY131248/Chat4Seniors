@@ -26,16 +26,16 @@ def main():
 
     # set logger
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         filename=merge_model_args.log_path,
         datefmt='%Y/%m/%d %H:%M:%S',
         format='%(asctime)s - %(name)s - %(levelname)s - %(lineno)d - %(module)s - %(message)s'
     )
     global logger
     logger = logging.getLogger(__name__)
-    logger.debug("Arguments:")
-    logger.debug("merge_model_args:")
-    logger.debug(merge_model_args.__repr__())
+    logger.info("Arguments:")
+    logger.info("merge_model_args:")
+    logger.info(merge_model_args.__repr__())
 
     # load the base LLM model and tokenizer
     llm_model, llm_tokenizer = get_llm_model_tokenizer(

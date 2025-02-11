@@ -92,16 +92,16 @@ def main():
 
     # set logger
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         filename=inference_args.log_path,
         datefmt='%Y/%m/%d %H:%M:%S',
         format='%(asctime)s - %(name)s - %(levelname)s - %(lineno)d - %(module)s - %(message)s'
     )
     global logger
     logger = logging.getLogger(__name__)
-    logger.debug("Arguments: ")
-    logger.debug("inference_args:")
-    logger.debug(inference_args.__repr__())
+    logger.info("Arguments: ")
+    logger.info("inference_args:")
+    logger.info(inference_args.__repr__())
 
     # load model
     llm_model, llm_tokenizer = get_peft_llm_model_tokenizer(

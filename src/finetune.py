@@ -166,11 +166,11 @@ def main():
     )
     global logger
     logger = logging.getLogger(__name__)
-    logger.debug("Arguments: ")
-    logger.debug("finetune_args:")
-    logger.debug(finetune_args.__repr__())
-    logger.debug("training_args:")
-    logger.debug(training_args.__repr__())
+    logger.info("Arguments: ")
+    logger.info("finetune_args:")
+    logger.info(finetune_args.__repr__())
+    logger.info("training_args:")
+    logger.info(training_args.__repr__())
 
     # load the base LLM model and tokenizer
     llm_model, llm_tokenizer = get_llm_model_tokenizer(finetune_args.llm_model_name, finetune_args.llm_model_path, finetune_args.peft_type)
