@@ -1,19 +1,23 @@
-mlx worker launch --gpu=4 --cpu=20 --memory=300 --type=Tesla-V100-SXM2-32GB -- python3 ../src/finetune.py \
+mlx worker launch --gpu=4 --cpu=20 --memory=150 --type=Tesla-V100-SXM2-32GB -- torchrun --nproc_per_node=4 --master_port=29501 ../src/finetune.py \
     --peft_type lora \
     --llm_model_name Qwen \
     --llm_model_path ../model/qwen2.5-7b-instruct \
-    --dataset_path ../data/trainset/car_sft_dataset.json \
+    --dataset_path ../data/trainset/car_sft_dataset_augmentation.json \
     --log_path ../log/car_qwen_lora_model_finetune.log \
     --max_length 1024 \
-    --lora_rank 16 \
-    --lora_alpha 32 \
+    --lora_rank 8 \
+    --lora_alpha 16 \
     --output_dir ../out/car_qwen_lora_model \
     --per_device_train_batch_size 8 \
     --per_device_eval_batch_size 8 \
     --num_train_epochs 5 \
-    --learning_rate 3e-5 \
+    --learning_rate 5e-5 \
     --save_steps 100 \
-    --save_total_limit 15 \
+    --save_total_limit 10 \
     --logging_steps 10 \
     --gradient_accumulation_steps 1 \
-    --warmup_ratio 0.05
+    --warmup_ratio 0.1 \
+    --fp16 \
+    --ddp_find_unused_parameters False \
+    --gradient_checkpointing True \
+    --dataloader_num_workers 4
