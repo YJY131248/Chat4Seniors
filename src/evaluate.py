@@ -107,16 +107,16 @@ def main():
 
     # set up logging
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         filename=eval_args.log_path,
         datefmt='%Y/%m/%d %H:%M:%S',
         format='%(asctime)s - %(name)s - %(levelname)s - %(lineno)d - %(module)s - %(message)s'
     )
     global logger
     logger = logging.getLogger(__name__)
-    logger.debug("Arguments: ")
-    logger.debug("eval_args:")
-    logger.debug(eval_args.__repr__())
+    logger.info("Arguments: ")
+    logger.info("eval_args:")
+    logger.info(eval_args.__repr__())
 
     # load the dataset and tokenizer dataset
     dataset = get_alpaca_dataset(eval_args.dataset_path, test_size=0.1)
