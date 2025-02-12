@@ -2,7 +2,7 @@ model/qwen2.5-7b-instruct/**
 model/roberta-large/**
 model/car_lora_model/**
 model/chat4seniors_model/**
-out/car_qwen_lora_model/**
+out/car_qwen_lora_model/checkpoint-**
 out/chat4seniors_model/**
 src/__pycache__/
 run/wandb/**
