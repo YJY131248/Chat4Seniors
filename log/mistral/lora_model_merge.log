@@ -1,0 +1,5 @@
+2025/02/19 15:43:23 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/02/19 15:43:23 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/02/19 15:43:23 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Mistral', llm_model_path='../model/base_models/Mistral-7B-Instruct-v0.2', peft_checkpoint_path='../out/car_model/car_mistral_lora_model/checkpoint-645/', merge_save_path='../model/car_model/mistral_lora_model', log_path='../log/car_model/mistral/lora_model_merge.log')
+2025/02/19 15:43:42 - __main__ - INFO - 46 - lora_merge - Base LLMs Mistral load successfully! LLM path::: ../model/base_models/Mistral-7B-Instruct-v0.2
+2025/02/19 15:44:47 - __main__ - INFO - 61 - lora_merge - Merge Model Mistral saved successfully! PEFT checkout path:::../out/car_model/car_mistral_lora_model/checkpoint-645/! Merge Model path::: ../model/car_model/mistral_lora_model

@@ -1,0 +1,5 @@
+2025/02/18 18:24:20 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/02/18 18:24:20 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/02/18 18:24:20 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Qwen', llm_model_path='../model/base_models/Qwen2.5-7B-Instruct', peft_checkpoint_path='../out/car_model/car_qwen_lora_model/checkpoint-645/', merge_save_path='../model/car_model/qwen_lora_model', log_path='../log/car_model/qwen/lora_model_merge.log')
+2025/02/18 18:24:44 - __main__ - INFO - 46 - lora_merge - Base LLMs Qwen load successfully! LLM path::: ../model/base_models/Qwen2.5-7B-Instruct
+2025/02/18 18:26:02 - __main__ - INFO - 61 - lora_merge - Merge Model Qwen saved successfully! PEFT checkout path:::../out/car_model/car_qwen_lora_model/checkpoint-645/! Merge Model path::: ../model/car_model/qwen_lora_model
