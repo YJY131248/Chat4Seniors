@@ -74,15 +74,20 @@ def get_llm_response(
             "temperature": 0.8,
             "repetition_penalty": 1.2,
             "eos_token_id": model.config.eos_token_id,
+            "pad_token_id": tokenizer.eos_token_id
         }
         generate_kwargs.update(kwargs)
         # generate the response
-        generated_ids = model.generate(model_inputs.input_ids, **generate_kwargs)
-        generated_ids = [
-            output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
-        ]
-        llm_response_mp[query] = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        
+        try:
+            generated_ids = model.generate(**model_inputs, **generate_kwargs)
+            generated_ids = [
+                output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+            ]
+            llm_response_mp[query] = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        except:
+            llm_response_mp[query] = "-1"
+            continue
+
     return llm_response_mp
 
 def main():
