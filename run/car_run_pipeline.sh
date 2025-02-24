@@ -1,3 +1,0 @@
-sh car_model_lora_finetune.sh
-sh car_model_lora_merge.sh
-sh car_model_lora_eval.sh

@@ -1,5 +1,0 @@
-2025/02/21 15:22:17 - __main__ - INFO - 36 - lora_merge - Arguments:
-2025/02/21 15:22:17 - __main__ - INFO - 37 - lora_merge - merge_model_args:
-2025/02/21 15:22:17 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Gemma', llm_model_path='../model/base_models/Gemma-7B-IT', peft_checkpoint_path='../out/car_model/car_gemma_lora_model/checkpoint-1285/', merge_save_path='../model/car_model/gemma_lora_model', log_path='../log/car_model/gemma/lora_model_merge.log')
-2025/02/21 15:22:28 - __main__ - INFO - 46 - lora_merge - Base LLMs Gemma load successfully! LLM path::: ../model/base_models/Gemma-7B-IT
-2025/02/21 15:29:14 - __main__ - INFO - 61 - lora_merge - Merge Model Gemma saved successfully! PEFT checkout path:::../out/car_model/car_gemma_lora_model/checkpoint-1285/! Merge Model path::: ../model/car_model/gemma_lora_model
