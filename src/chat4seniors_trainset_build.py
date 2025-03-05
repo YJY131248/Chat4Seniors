@@ -22,6 +22,9 @@ def dataset_filter(ipt_json_path: str, opt_json_path: str):
         try:
             for info in data[idx]["data"]:
                 if info["role"] == 'user':
+                    # filter short text
+                    if len(info["text"]) <= 20:
+                        continue
                     # get user congitive ability
                     cr = get_llm_response(
                         [info["text"]], llm_model, llm_tokenizer, 
@@ -32,11 +35,13 @@ def dataset_filter(ipt_json_path: str, opt_json_path: str):
                         do_sample=False
                     )
                     if cr[info["text"]] in ['0', '1', '2']:
-                        info["congitive_ability"] = cr
+                        info["congitive_ability"] = cr[info["text"]]
                         dialog_data.append(info)
                     else:   # stop dialog
                         break
                 elif info["role"] == 'system':
+                    if len(dialog_data) > 0 and dialog_data[-1]["role"] != "user":
+                        continue
                     info["role"] = "assistant"
                     dialog_data.append(info)
         except:
