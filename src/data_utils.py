@@ -1,7 +1,13 @@
 import re
+import json
 import string
 from transformers import AutoTokenizer
 from datasets import load_dataset
+
+def load_json(json_path):
+    with open(json_path, "r+", encoding="utf8") as f:
+        data = json.load(f)
+    return data
 
 def preprocess_text(text):
     text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)
