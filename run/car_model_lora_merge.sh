@@ -1,8 +1,8 @@
 mlx worker launch -- python3 ../src/lora_merge.py \
     --peft_type lora \
-    --llm_model_name Qwen \
-    --llm_model_path ../model/base_models/Qwen2.5-7B-Instruct \
-    --peft_checkpoint_path ../out/car_model/car_qwen_lora_model/checkpoint-645/ \
+    --llm_model_name Mistral \
+    --llm_model_path ../model/base_models/Mistral-7B-Instruct-v0.2 \
+    --peft_checkpoint_path ../out/car_model/car_mistral_lora_model/checkpoint-645/ \
     --merge_save_path ../model/car_model \
-    --log_path ../log/car_model/qwen/lora_model_merge.log
+    --log_path ../log/car_model/mistral/lora_model_merge.log
     
