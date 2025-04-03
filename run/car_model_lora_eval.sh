@@ -1,4 +1,4 @@
-mlx worker launch -- python3 ../src/evaluate.py \
+python3 ../src/evaluate.py \
     --peft_type lora \
     --task_type classification \
     --llm_model_name Mistral \
