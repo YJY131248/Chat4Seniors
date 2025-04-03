@@ -1,9 +1,9 @@
 mlx worker launch -- python3 ../src/inference.py \
-    --llm_model_name Qwen \
+    --llm_model_name Mistral \
     --llm_model_path ../model/car_model \
     --peft_type lora \
     --use_peft_model True \
-    --log_path ../log/car_model/qwen/lora_model_inference.log \
+    --log_path ../log/car_model/mistral/lora_model_inference.log \
     --max_new_tokens 10 \
     --do_sample False \
     --top_p 0.1 \

@@ -1,11 +1,11 @@
 mlx worker launch -- python3 ../src/evaluate.py \
     --peft_type lora \
     --task_type classification \
-    --llm_model_name Qwen \
+    --llm_model_name Mistral \
     --llm_model_path ../model/car_model \
     --dataset_path ../data/trainset/car_sft_dataset_augmentation.json \
-    --save_eval_res_path ../out/car_model/car_qwen_lora_model/eval_res/eval_res.csv \
-    --log_path ../log/car_model/qwen/lora_model_eval.log \
+    --save_eval_res_path ../out/car_model/car_mistral_lora_model/eval_res/eval_res.csv \
+    --log_path ../log/car_model/mistral/lora_model_eval.log \
     --use_peft_model True \
     --max_new_tokens 1 \
     --do_sample False \
