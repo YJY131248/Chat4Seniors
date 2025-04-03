@@ -1,4 +1,4 @@
-mlx worker launch -- python3 ../src/inference.py \
+python3 ../src/inference.py \
     --llm_model_name Mistral \
     --llm_model_path ../model/car_model \
     --peft_type lora \

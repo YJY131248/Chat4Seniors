@@ -1,4 +1,4 @@
-mlx worker launch --gpu=4 --cpu=20 --memory=200 --type=Tesla-V100-SXM2-32GB -- torchrun --nproc_per_node=4 --master_port=29501 ../src/finetune.py \
+torchrun --nproc_per_node=2 --master_port=29501 ../src/finetune.py \
     --peft_type lora \
     --llm_model_name Mistral \
     --llm_model_path ../model/base_models/Mistral-7B-Instruct-v0.2 \
@@ -20,4 +20,4 @@ mlx worker launch --gpu=4 --cpu=20 --memory=200 --type=Tesla-V100-SXM2-32GB -- t
     --fp16 \
     --ddp_find_unused_parameters False \
     --gradient_checkpointing True \
-    --dataloader_num_workers 4
+    --dataloader_num_workers 2

@@ -11,8 +11,8 @@ warnings.filterwarnings("ignore")
 # load llm & tokenizer
 llm_model, llm_tokenizer = get_peft_llm_model_tokenizer(
     "Mistral", 
-    "../model/car_model/mistral_lora_model", 
-    peft_model_path="../out/car_model/car_mistral_lora_model/checkpoint-1285", 
+    "../model/car_model", 
+    peft_model_path="../out/car_model/car_mistral_lora_model/checkpoint-645", 
     peft_type="lora",
     use_peft_model=True
 )

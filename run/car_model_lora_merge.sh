@@ -1,4 +1,4 @@
-mlx worker launch -- python3 ../src/lora_merge.py \
+python3 ../src/lora_merge.py \
     --peft_type lora \
     --llm_model_name Mistral \
     --llm_model_path ../model/base_models/Mistral-7B-Instruct-v0.2 \
