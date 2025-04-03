@@ -78,7 +78,7 @@ def generate_multiturn_dialog(dialogs: List[dict], max_turn: int = 10):
     # get top-(N-1) dialogs
     while len(apr.dialogs) < max_turn - 1:
         prompt = apr.generate_prompt()
-        assistant_r1_resp = get_ark_volcenging_llm_resp(prompt=prompt, endpoint_id="ep-20250206103155-q4fck")
+        assistant_r1_resp = get_ark_volcenging_llm_resp(prompt=prompt, endpoint_id="ep-2025hahahahaha")
         role = "assistant" if apr.dialogs[-1]["role"] == "user" else "user"
         resp_text = llm_resp_post_process(assistant_r1_resp["answer_response"])
         assistant_r1_resp = {

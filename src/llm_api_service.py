@@ -4,14 +4,14 @@ from volcenginesdkarkruntime import Ark
 
 # volcengine client
 client = Ark(
-    base_url="https://ark.cn-beijing.volces.com/api/v3",
+    base_url="https://xxxxxxxxx",
     max_retries=5
 )
 
 # Ark Volcenging API
 def get_ark_volcenging_llm_resp(prompt: str, endpoint_id: str = "", **kwargs)-> dict:
     if endpoint_id == "":
-        endpoint_id = "ep-20250206103155-q4fck" # deepseek-r1  
+        endpoint_id = "ep-2025hahahahahhaha" # deepseek-r1  
 
     messages = [{"role": "user", "content": prompt}]
     default_llm_params = {
@@ -51,8 +51,8 @@ def get_pos_neg_resp_pair(pos_prompt: str, neg_prompt: str) -> Tuple[str, str]:
     manager = multiprocessing.Manager()
     llm_resp_dict = manager.dict()
     processes = [
-        multiprocessing.Process(target=get_parallel_llm_resp, args=(pos_prompt, llm_resp_dict, 'positive', "ep-20250206103155-q4fck")),
-        multiprocessing.Process(target=get_parallel_llm_resp, args=(neg_prompt, llm_resp_dict, 'negative', "ep-20250206103155-q4fck"))
+        multiprocessing.Process(target=get_parallel_llm_resp, args=(pos_prompt, llm_resp_dict, 'positive', "ep-2025hahahahahhahaha")),
+        multiprocessing.Process(target=get_parallel_llm_resp, args=(neg_prompt, llm_resp_dict, 'negative', "ep-2025hahahahahhahaha"))
     ]
     for process in processes:
         process.start()
