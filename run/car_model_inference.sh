@@ -1,6 +1,6 @@
 mlx worker launch -- python3 ../src/inference.py \
     --llm_model_name Qwen \
-    --llm_model_path ../model/car_model/qwen_lora_model \
+    --llm_model_path ../model/car_model \
     --peft_type lora \
     --use_peft_model True \
     --log_path ../log/car_model/qwen/lora_model_inference.log \
