@@ -140,6 +140,44 @@ def dpo_trainset_build(ipt_json_path: str, opt_json_path: str):
             json.dump(save_data, open(opt_json_path, "w"), ensure_ascii=False, indent=4)
             print("save data done! save dataset in the path:::{}, total dialog num:::{}".format(opt_json_path, len(save_data)))
 
+def dpo_trainset_format_convert_from_sharegpt_to_(ipt_json_path: str, opt_json_path: str):
+    data = json.load(open(ipt_json_path, "r"))
+    save_data = []
+    for idx in tqdm(range(len(data))):
+        conversations = data[idx]["conversations"]
+        chosen = data[idx]["chosen"]["value"]
+        rejected = data[idx]["rejected"]["value"]
+        dialogs = []
+        try:
+            for conversation in conversations:
+                if conversation["from"] == "human":
+                    cognitive_ability = get_llm_response(
+                        [conversation["value"]], llm_model, llm_tokenizer, 
+                        max_new_tokens=5, 
+                        top_p=0.1, 
+                        temperature=0.1,
+                        repetition_penalty=1.2,
+                        do_sample=False
+                    )
+                    cognitive_ability = cognitive_ability[conversation["value"]]
+                    dialogs.append({"role": "user", "text": conversation["value"], "congitive_ability": str(cognitive_ability)})
+                else:
+                    dialogs.append({"role": "assistant", "text": conversation["value"]})
+            apr = AdaptivePromptRouter(dialogs=dialogs, template_path="../config/adaptive_prompt.json")
+            prompt = apr.generate_prompt()
+            save_data.append({
+                "prompt": prompt,
+                "chosen": chosen,
+                "rejected": rejected
+            })
+        except:
+            continue
+
+    # save data
+    json.dump(save_data, open(opt_json_path, "w"), ensure_ascii=False, indent=4)
+    print("save data done! save dataset in the path:::{}, total dialog num:::{}".format(opt_json_path, len(save_data)))
+
+
 if __name__ == "__main__":
     # # dataset filter
     # dataset_filter(
@@ -147,8 +185,14 @@ if __name__ == "__main__":
     #     opt_json_path="../data/carecall-corpus/carecall_dialog_dataset_filter.json"
     # )
 
-    # build dpo trainset
-    dpo_trainset_build(
-        ipt_json_path="../data/carecall-corpus/carecall_dialog_dataset_filter.json",
+    # # build dpo trainset(sharegpt_format)
+    # dpo_trainset_build(
+    #     ipt_json_path="../data/carecall-corpus/carecall_dialog_dataset_filter.json",
+    #     opt_json_path="../data/trainset/chat4seniors_dpo_trainset_sharegpt_format.json"
+    # )
+
+    # format convert
+    dpo_trainset_format_convert_from_sharegpt_to_(
+        ipt_json_path="../data/trainset/chat4seniors_dpo_trainset_sharegpt_format.json",
         opt_json_path="../data/trainset/chat4seniors_dpo_trainset.json"
     )

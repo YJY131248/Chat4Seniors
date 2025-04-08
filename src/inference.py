@@ -5,7 +5,7 @@ from transformers import (
     AutoModelForCausalLM, 
     HfArgumentParser
 )
-from typing import Optional, Union
+from typing import Optional, Union, List
 from peft import PeftModelForCausalLM
 from dataclasses import dataclass, field
 from finetune import get_llm_model_tokenizer
@@ -43,7 +43,7 @@ def get_peft_llm_model_tokenizer(
     return model, tokenizer
 
 def get_llm_response(
-    query_list: list[str], 
+    query_list: List[str], 
     model: Union[AutoModelForCausalLM, PeftModelForCausalLM], 
     tokenizer: AutoTokenizer, 
     **kwargs
@@ -53,7 +53,7 @@ def get_llm_response(
     model.eval()
     # set the response map
     llm_response_mp = {}
-    for query in tqdm(query_list):
+    for query in query_list:
         try:
             # qwen/llama/mistral/glm
             messages = [
