@@ -2,7 +2,7 @@ import re
 import json
 import string
 from transformers import AutoTokenizer
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
 
 def load_json(json_path):
     with open(json_path, "r+", encoding="utf8") as f:
@@ -26,7 +26,26 @@ def get_alpaca_dataset(json_path: str, test_size: float=0.1):
     dataset = dataset.train_test_split(test_size=test_size, seed=42)
     return dataset
 
-def get_tokenizer_dataset(
+def get_dpo_dataset(path, test_size=0.1):
+    with open(path, "r", encoding="utf-8") as f:
+        raw_data = json.load(f)
+
+    data = {
+        "prompt": [],
+        "chosen": [],
+        "rejected": [],
+    }
+
+    for item in raw_data:
+        data["prompt"].append(item["prompt"])
+        data["chosen"].append(item["chosen"])
+        data["rejected"].append(item["rejected"])
+
+    dataset = Dataset.from_dict(data)
+    dataset = dataset.train_test_split(test_size=test_size)
+    return dataset
+
+def get_tokenizer_finetune_dataset(
     dataset, 
     tokenizer,
     max_length: int=256,
