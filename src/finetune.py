@@ -22,7 +22,7 @@ from peft import (
 )
 from typing import Dict, Union
 from dataclasses import dataclass, field
-from data_utils import get_alpaca_dataset, get_tokenizer_dataset
+from data_utils import get_alpaca_dataset, get_tokenizer_finetune_dataset
 
 # Define the fine-tuning argument class
 @dataclass
@@ -225,7 +225,7 @@ def main():
     # load the dataset and tokenizer dataset
     dataset = get_alpaca_dataset(finetune_args.dataset_path, test_size=0.1)
     logger.info('dataset build successfully!')
-    tokenizer_dataset = get_tokenizer_dataset(dataset, llm_tokenizer, max_length=finetune_args.max_length)
+    tokenizer_dataset = get_tokenizer_finetune_dataset(dataset, llm_tokenizer, max_length=finetune_args.max_length)
     logger.info('tokenizer dataset build successfully!')
 
     # start training

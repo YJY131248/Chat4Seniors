@@ -1,5 +1,6 @@
 model/
 out/**/checkpoint-**
+out/**/runs/**
 src/__pycache__/
 run/wandb/**
 **/.DS_Store
