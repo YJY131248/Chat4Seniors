@@ -6,11 +6,12 @@ torchrun --nproc_per_node=2 --master_port=29501 ../src/dpo_train.py \
     --lora_rank 8 \
     --lora_alpha 16 \
     --lora_dropout 0.1 \
-    --max_length 2048 \
+    --max_length 1024 \
     --beta 0.1 \
     --output_dir ../out/chat4seniors_model/chat4seniors_mistral_dpo_model \
-    --per_device_train_batch_size 2 \
-    --per_device_eval_batch_size 2 \
+    --per_device_train_batch_size 1 \
+    --per_device_eval_batch_size 1 \
+    --gradient_accumulation_steps 1 \
     --num_train_epochs 3 \
     --learning_rate 1e-4 \
     --lr_scheduler_type cosine \
