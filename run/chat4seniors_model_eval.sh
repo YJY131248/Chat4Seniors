@@ -1,0 +1,14 @@
+python3 ../src/evaluate.py \
+    --peft_type lora \
+    --task_type qa \
+    --llm_model_name Mistral \
+    --llm_model_path ../model/chat4seniors_model \
+    --dataset_path ../data/trainset/chat4seniors_dpo_trainset.json \
+    --save_eval_res_path ../out/chat4seniors_model/mistral_dpo_b0.5_lr1e-5_e5/eval_res/eval_res.csv \
+    --log_path ../log/chat4seniors_model/mistral/dpo_model_eval.log \
+    --use_peft_model True \
+    --max_new_tokens 1024 \
+    --do_sample False \
+    --top_p 0.9 \
+    --temperature 0.7 \
+    --repetition_penalty 1.2
