@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# 定义超参网格
-BETAS=(0.2 0.3 0.5)
-LRS=(5e-6 1e-5)
-EPOCHS=(3 5)
+BETAS=(0.1 0.2 0.3 0.5)
+LRS=(1e-4 5e-5 1e-5 5e-6)
+EPOCHS=(1 2 3 5)
 
-# 固定参数
 MODEL_NAME="Mistral"
 MODEL_PATH="../model/base_models/Mistral-7B-Instruct-v0.2"
 DATA_PATH="../data/trainset/chat4seniors_dpo_trainset.json"
@@ -13,12 +11,11 @@ OUTPUT_BASE="../out/chat4seniors_model/gridsearch-mistral"
 LOG_BASE="../log/chat4seniors_model/mistral/gridsearch"
 DEEPSPEED_CONFIG="../config/ds_stage_2_config.json"
 
-# 遍历超参组合
+
 for beta in "${BETAS[@]}"; do
   for lr in "${LRS[@]}"; do
     for epoch in "${EPOCHS[@]}"; do
 
-      # 设置唯一运行名
       RUN_NAME="mistral_dpo_b${beta}_lr${lr}_e${epoch}"
       OUTPUT_DIR="${OUTPUT_BASE}/${RUN_NAME}"
       LOG_PATH="${LOG_BASE}/${RUN_NAME}.log"

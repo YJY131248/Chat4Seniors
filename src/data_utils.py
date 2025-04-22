@@ -42,7 +42,7 @@ def get_dpo_dataset(path, test_size=0.1):
         data["rejected"].append(item["rejected"])
 
     dataset = Dataset.from_dict(data)
-    dataset = dataset.train_test_split(test_size=test_size)
+    dataset = dataset.train_test_split(test_size=test_size, seed=42)
     return dataset
 
 def get_tokenizer_finetune_dataset(

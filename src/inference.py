@@ -53,7 +53,7 @@ def get_llm_response(
     model.eval()
     # set the response map
     llm_response_mp = {}
-    for query in query_list:
+    for query in tqdm(query_list):
         try:
             # qwen/llama/mistral/glm
             messages = [

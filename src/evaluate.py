@@ -9,7 +9,7 @@ from typing import List
 from dataclasses import dataclass, field
 from transformers import HfArgumentParser
 from sklearn.metrics import classification_report
-from data_utils import get_alpaca_dataset
+from data_utils import get_alpaca_dataset, get_dpo_dataset
 from inference import get_peft_llm_model_tokenizer, get_llm_response
 
 # set merge model arguments
@@ -77,7 +77,7 @@ def compute_metrics(
         meteor_score_mean = np.mean(meteor_scores)
 
         # BERTScore Calculation
-        P, R, F1 = score(preds, [r[0] for r in refs], model_type="../model/roberta-large", num_layers=17, lang="en")
+        P, R, F1 = score(preds, [r[0] for r in refs], model_type="../model/base_models/roberta-large", num_layers=17, lang="en")
         bert_score_precision = np.mean(P.numpy())
         bert_score_recall = np.mean(R.numpy())
         bert_score_f1 = np.mean(F1.numpy())
@@ -119,7 +119,8 @@ def main():
     logger.info(eval_args.__repr__())
 
     # load the dataset and tokenizer dataset
-    dataset = get_alpaca_dataset(eval_args.dataset_path, test_size=0.1)
+    # dataset = get_alpaca_dataset(eval_args.dataset_path, test_size=0.1)  # SFT
+    dataset = get_dpo_dataset(eval_args.dataset_path, test_size=0.1)     # DPO
     dataset = dataset['test']
     logger.info('dataset build successfully!')
 
@@ -135,7 +136,8 @@ def main():
     logger.info('LLMs {} load successfully! LLM path::: {}'.format(eval_args.llm_model_name, eval_args.llm_model_path))
 
     # get llm resp
-    query_list = [sample['instruction'] for sample in dataset]
+    # query_list = [sample['instruction'] for sample in dataset]   # SFT
+    query_list = [sample['prompt'] for sample in dataset]     # DPO
     llm_response_mp = get_llm_response(
         query_list=query_list,
         model = llm_model,
@@ -147,7 +149,8 @@ def main():
         do_sample=eval_args.do_sample
     )
     preds = [llm_response_mp[query] for query in query_list]
-    labels = [sample['output'] for sample in dataset]
+    # labels = [sample['output'] for sample in dataset]   # SFT
+    labels = [sample['chosen'] for sample in dataset]  # DPO
     logger.info('LLMs {} get response successfully!'.format(eval_args.llm_model_name))
     logger.info('pred::: {}\nlabels::: {}'.format(preds, labels))
     
@@ -166,6 +169,7 @@ def main():
     print(eval_metrics)
     logger.info('eval metrics: {}'.format(eval_metrics))
     logger.info('eval done!')
+
 
 if __name__ == "__main__":
     main()
