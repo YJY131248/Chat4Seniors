@@ -3,4 +3,5 @@ out/**/checkpoint-**
 out/**/runs/**
 src/__pycache__/
 run/wandb/**
+log/chat4seniors_model/**/gridsearch/**.log
 **/.DS_Store
