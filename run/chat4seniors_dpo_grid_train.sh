@@ -2,7 +2,7 @@
 
 BETAS=(0.1 0.2 0.3 0.5)
 LRS=(1e-4 5e-5 1e-5 5e-6)
-EPOCHS=(1 2 3 5)
+EPOCHS=(2)
 
 MODEL_NAME="Mistral"
 MODEL_PATH="../model/base_models/Mistral-7B-Instruct-v0.2"
