@@ -4,11 +4,11 @@ BETAS=(0.1 0.2 0.3 0.5)
 LRS=(1e-4 5e-5 1e-5 5e-6)
 EPOCHS=(2)
 
-MODEL_NAME="Mistral"
-MODEL_PATH="../model/base_models/Mistral-7B-Instruct-v0.2"
+MODEL_NAME="Llama"
+MODEL_PATH="../model/base_models/Llama-3-8B"
 DATA_PATH="../data/trainset/chat4seniors_dpo_trainset.json"
-OUTPUT_BASE="../out/chat4seniors_model/gridsearch-mistral"
-LOG_BASE="../log/chat4seniors_model/mistral/gridsearch"
+OUTPUT_BASE="../out/chat4seniors_model/gridsearch-llama"
+LOG_BASE="../log/chat4seniors_model/llama/gridsearch"
 DEEPSPEED_CONFIG="../config/ds_stage_2_config.json"
 
 
@@ -16,7 +16,7 @@ for beta in "${BETAS[@]}"; do
   for lr in "${LRS[@]}"; do
     for epoch in "${EPOCHS[@]}"; do
 
-      RUN_NAME="mistral_dpo_b${beta}_lr${lr}_e${epoch}"
+      RUN_NAME="llama_dpo_b${beta}_lr${lr}_e${epoch}"
       OUTPUT_DIR="${OUTPUT_BASE}/${RUN_NAME}"
       LOG_PATH="${LOG_BASE}/${RUN_NAME}.log"
 
@@ -30,7 +30,6 @@ for beta in "${BETAS[@]}"; do
         --lora_rank 8 \
         --lora_alpha 16 \
         --lora_dropout 0.1 \
-        --max_length 1024 \
         --beta ${beta} \
         --output_dir ${OUTPUT_DIR} \
         --per_device_train_batch_size 1 \
@@ -39,12 +38,13 @@ for beta in "${BETAS[@]}"; do
         --num_train_epochs ${epoch} \
         --learning_rate ${lr} \
         --lr_scheduler_type cosine \
-        --save_steps 100 \
-        --save_total_limit 20 \
-        --logging_steps 50 \
+        --save_strategy epoch \
+        --save_total_limit 2 \
+        --logging_steps 100 \
         --report_to tensorboard \
         --warmup_ratio 0.05 \
         --deepspeed ${DEEPSPEED_CONFIG} \
+        --max_prompt_length 1024 \
         --fp16 True
 
     done

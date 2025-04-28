@@ -121,8 +121,7 @@ def dpo_train(
         args=train_args,
         train_dataset=dataset["train"],
         eval_dataset=dataset["test"],
-        tokenizer=tokenizer,
-        max_prompt_length=2048,
+        tokenizer=tokenizer
     )
     trainer.train()
 
