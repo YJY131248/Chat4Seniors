@@ -6,7 +6,6 @@ torchrun --nproc_per_node=2 --master_port=29501 ../src/dpo_train.py \
     --lora_rank 8 \
     --lora_alpha 16 \
     --lora_dropout 0.1 \
-    --max_length 1024 \
     --beta 0.5 \
     --output_dir ../out/chat4seniors_model/chat4seniors_mistral_dpo_model \
     --per_device_train_batch_size 1 \
@@ -21,4 +20,5 @@ torchrun --nproc_per_node=2 --master_port=29501 ../src/dpo_train.py \
     --report_to tensorboard \
     --warmup_ratio 0.05 \
     --deepspeed ../config/ds_stage_2_config.json \
+    --max_prompt_length 1024 \
     --fp16 True
