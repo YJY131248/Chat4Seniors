@@ -4,11 +4,11 @@ BETAS=(0.1 0.2 0.3 0.5)
 LRS=(1e-4 5e-5 1e-5 5e-6)
 EPOCHS=(2)
 
-MODEL_NAME="Llama"
-MODEL_PATH="../model/base_models/Llama-3-8B"
+MODEL_NAME="Qwen"
+MODEL_PATH="../model/base_models/Qwen2.5-7B-Instruct"
 DATA_PATH="../data/trainset/chat4seniors_dpo_trainset.json"
-OUTPUT_BASE="../out/chat4seniors_model/gridsearch-llama"
-LOG_BASE="../log/chat4seniors_model/llama/gridsearch"
+OUTPUT_BASE="../out/chat4seniors_model/gridsearch-qwen"
+LOG_BASE="../log/chat4seniors_model/qwen/gridsearch"
 DEEPSPEED_CONFIG="../config/ds_stage_2_config.json"
 
 
@@ -16,7 +16,7 @@ for beta in "${BETAS[@]}"; do
   for lr in "${LRS[@]}"; do
     for epoch in "${EPOCHS[@]}"; do
 
-      RUN_NAME="llama_dpo_b${beta}_lr${lr}_e${epoch}"
+      RUN_NAME="qwen_dpo_b${beta}_lr${lr}_e${epoch}"
       OUTPUT_DIR="${OUTPUT_BASE}/${RUN_NAME}"
       LOG_PATH="${LOG_BASE}/${RUN_NAME}.log"
 
@@ -44,7 +44,7 @@ for beta in "${BETAS[@]}"; do
         --report_to tensorboard \
         --warmup_ratio 0.05 \
         --deepspeed ${DEEPSPEED_CONFIG} \
-        --max_prompt_length 1024 \
+        --max_prompt_length 512 \
         --fp16 True
 
     done
