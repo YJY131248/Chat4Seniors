@@ -26,7 +26,8 @@ class DPOArguments:
     lora_dropout: float = field(default=0.1)
 
 def apply_lora(model, dpo_args):
-    target_modules = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+    # target_modules = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+    target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"]
     if dpo_args.llm_model_name == "BaiChuan":
         target_modules = ["W_pack", "W_unpack", "W_proj", "W_o", "W_gate", "W_up", "W_down"]
     lora_config = LoraConfig(
