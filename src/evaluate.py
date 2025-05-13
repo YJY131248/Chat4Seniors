@@ -1,3 +1,4 @@
+import os
 import logging
 import warnings
 import numpy as np
@@ -155,6 +156,8 @@ def main():
     logger.info('pred::: {}\nlabels::: {}'.format(preds, labels))
     
     # save preds and labels
+    dir_path = os.path.dirname(eval_args.save_eval_res_path)
+    os.makedirs(dir_path, exist_ok=True)
     with open(eval_args.save_eval_res_path, 'w') as f:
         f.write('pred,label\n')
         for pred, label in zip(preds, labels):
