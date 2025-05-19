@@ -140,7 +140,7 @@ def dpo_trainset_build(ipt_json_path: str, opt_json_path: str):
             json.dump(save_data, open(opt_json_path, "w"), ensure_ascii=False, indent=4)
             print("save data done! save dataset in the path:::{}, total dialog num:::{}".format(opt_json_path, len(save_data)))
 
-def dpo_trainset_format_convert_from_sharegpt_to_(ipt_json_path: str, opt_json_path: str):
+def dpo_trainset_format_convert_from_sharegpt_to_default(ipt_json_path: str, opt_json_path: str):
     data = json.load(open(ipt_json_path, "r"))
     save_data = []
     for idx in tqdm(range(len(data))):
@@ -178,6 +178,23 @@ def dpo_trainset_format_convert_from_sharegpt_to_(ipt_json_path: str, opt_json_p
     print("save data done! save dataset in the path:::{}, total dialog num:::{}".format(opt_json_path, len(save_data)))
 
 
+def build_dpo_hf_eval_dataset():
+    with open("../data/trainset/chat4seniors_dpo_trainset.json", "r") as f:
+        data = json.load(f)
+    save_data = []
+    for item in data:
+        prompt = "'# Context\n'" + item["prompt"].split('# Context\n')[1]
+        save_data.append({
+            "prompt": prompt,
+            "chosen": item["chosen"],
+            "rejected": item["rejected"]
+        })
+    # save data
+    with open("../data/trainset/chat4seniors_dpo_trainset_hf_eval.json", "w") as f:
+        json.dump(save_data, f, ensure_ascii=False, indent=4)
+    print("save data done! save dataset in the path:::{}, total dialog num:::{}".format("../data/trainset/chat4seniors_dpo_trainset_hf_eval.json", len(save_data)))
+
+
 if __name__ == "__main__":
     # # dataset filter
     # dataset_filter(
@@ -191,8 +208,10 @@ if __name__ == "__main__":
     #     opt_json_path="../data/trainset/chat4seniors_dpo_trainset_sharegpt_format.json"
     # )
 
-    # format convert
-    dpo_trainset_format_convert_from_sharegpt_to_(
-        ipt_json_path="../data/trainset/chat4seniors_dpo_trainset_sharegpt_format.json",
-        opt_json_path="../data/trainset/chat4seniors_dpo_trainset.json"
-    )
+    # # format convert
+    # dpo_trainset_format_convert_from_sharegpt_to_default(
+    #     ipt_json_path="../data/trainset/chat4seniors_dpo_trainset_sharegpt_format.json",
+    #     opt_json_path="../data/trainset/chat4seniors_dpo_trainset.json"
+    # )
+
+    build_dpo_hf_eval_dataset()
