@@ -8,7 +8,7 @@ from rouge_score import rouge_scorer
 from bert_score import score
 from typing import List
 from dataclasses import dataclass, field
-from transformers import HfArgumentParser
+from transformers import HfArgumentParser, AutoTokenizer
 from sklearn.metrics import classification_report
 from data_utils import get_alpaca_dataset, get_dpo_dataset
 from inference import get_peft_llm_model_tokenizer, get_llm_response
@@ -51,8 +51,18 @@ def compute_metrics(
     # QA task
     elif task_type == "qa":
         # Filter out empty strings
-        preds = [p if p else " " for p in preds]
-        refs = [[r if r else " "] for r in labels]
+        def truncate_to_token_limit(text, tokenizer, max_tokens=500):
+            encoded = tokenizer.encode_plus(
+                text,
+                max_length=max_tokens,
+                truncation=True,
+                return_tensors="pt"
+            )
+            return tokenizer.decode(encoded["input_ids"][0], skip_special_tokens=True)
+
+        tokenizer = AutoTokenizer.from_pretrained("../model/base_models/roberta-large")
+        preds = [truncate_to_token_limit(p, tokenizer) for p in preds]
+        refs = [[truncate_to_token_limit(r[0], tokenizer)] for r in labels]
 
         # BLEU Score Calculation
         bleu_score = corpus_bleu(refs, preds)
@@ -78,7 +88,7 @@ def compute_metrics(
         meteor_score_mean = np.mean(meteor_scores)
 
         # BERTScore Calculation
-        P, R, F1 = score(preds, [r[0] for r in refs], model_type="../model/base_models/roberta-large", num_layers=17, lang="en")
+        P, R, F1 = score(preds, [r[0] for r in refs], model_type="../model/base_models/roberta-large", num_layers=17, lang="en", verbose=True)
         bert_score_precision = np.mean(P.numpy())
         bert_score_recall = np.mean(R.numpy())
         bert_score_f1 = np.mean(F1.numpy())
@@ -139,6 +149,7 @@ def main():
     # get llm resp
     # query_list = [sample['instruction'] for sample in dataset]   # SFT
     query_list = [sample['prompt'] for sample in dataset]     # DPO
+    # query_list = query_list[:10]
     llm_response_mp = get_llm_response(
         query_list=query_list,
         model = llm_model,
@@ -152,16 +163,17 @@ def main():
     preds = [llm_response_mp[query] for query in query_list]
     # labels = [sample['output'] for sample in dataset]   # SFT
     labels = [sample['chosen'] for sample in dataset]  # DPO
+    # labels = labels[:10]
     logger.info('LLMs {} get response successfully!'.format(eval_args.llm_model_name))
     logger.info('pred::: {}\nlabels::: {}'.format(preds, labels))
     
     # save preds and labels
     dir_path = os.path.dirname(eval_args.save_eval_res_path)
     os.makedirs(dir_path, exist_ok=True)
-    with open(eval_args.save_eval_res_path, 'w') as f:
+    with open(eval_args.save_eval_res_path, 'w', encoding='utf-8') as f:
         f.write('pred,label\n')
         for pred, label in zip(preds, labels):
-            f.write(pred + ',' + label + '\n')
+            f.write(pred + '\t' + label + '\n')
     
     # eval
     eval_metrics = compute_metrics(
