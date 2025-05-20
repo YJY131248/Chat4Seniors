@@ -2,6 +2,7 @@ import os
 import logging
 import warnings
 import numpy as np
+import pandas as pd
 from nltk.translate.bleu_score import corpus_bleu
 from nltk.translate.meteor_score import meteor_score
 from rouge_score import rouge_scorer
@@ -51,7 +52,7 @@ def compute_metrics(
     # QA task
     elif task_type == "qa":
         # Filter out empty strings
-        def truncate_to_token_limit(text, tokenizer, max_tokens=500):
+        def truncate_to_token_limit(text, tokenizer, max_tokens=1000):
             encoded = tokenizer.encode_plus(
                 text,
                 max_length=max_tokens,
@@ -60,12 +61,12 @@ def compute_metrics(
             )
             return tokenizer.decode(encoded["input_ids"][0], skip_special_tokens=True)
 
-        tokenizer = AutoTokenizer.from_pretrained("../model/base_models/roberta-large")
+        tokenizer = AutoTokenizer.from_pretrained("../model/base_models/deberta-v3-large")
         preds = [truncate_to_token_limit(p, tokenizer) for p in preds]
-        refs = [[truncate_to_token_limit(r[0], tokenizer)] for r in labels]
+        refs = [[truncate_to_token_limit(r, tokenizer)] for r in labels]
 
         # BLEU Score Calculation
-        bleu_score = corpus_bleu(refs, preds)
+        bleu_score = corpus_bleu([[r[0].split()] for r in refs], [p.split() for p in preds])
 
         # ROUGE Score Calculation
         rough_scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
@@ -88,13 +89,17 @@ def compute_metrics(
         meteor_score_mean = np.mean(meteor_scores)
 
         # BERTScore Calculation
-        P, R, F1 = score(preds, [r[0] for r in refs], model_type="../model/base_models/roberta-large", num_layers=17, lang="en", verbose=True)
+        P, R, F1 = score(
+            preds, [r[0] for r in refs], 
+            model_type="../model/base_models/deberta-v3-large", 
+            num_layers=12, lang="en", verbose=True, device="cuda:1"
+        )
         bert_score_precision = np.mean(P.numpy())
         bert_score_recall = np.mean(R.numpy())
         bert_score_f1 = np.mean(F1.numpy())
 
         return {
-            "bleu": bleu_score / 100,
+            "bleu": bleu_score,
             "rouge1": rouge1_score,
             "rouge2": rouge2_score,
             "rougeL": rougeL_score,
@@ -170,10 +175,12 @@ def main():
     # save preds and labels
     dir_path = os.path.dirname(eval_args.save_eval_res_path)
     os.makedirs(dir_path, exist_ok=True)
-    with open(eval_args.save_eval_res_path, 'w', encoding='utf-8') as f:
-        f.write('pred,label\n')
-        for pred, label in zip(preds, labels):
-            f.write(pred + '\t' + label + '\n')
+    infer_df = pd.DataFrame({
+        "preds": preds,
+        "labels": labels
+    })
+    infer_df.to_csv(eval_args.save_eval_res_path, index=False)
+    logger.info('preds and labels save successfully! save path::: {}'.format(eval_args.save_eval_res_path))
     
     # eval
     eval_metrics = compute_metrics(

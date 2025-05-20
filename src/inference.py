@@ -49,7 +49,7 @@ def get_llm_response(
     **kwargs
 ):
     # load the LLM model and tokenizer
-    model = model.cuda()
+    # model = model.cuda()
     model.eval()
     # set the response map
     llm_response_mp = {}
@@ -84,7 +84,8 @@ def get_llm_response(
                 output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
             ]
             llm_response_mp[query] = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        except:
+        except Exception as e:
+            print("Error during generation: ", e)
             llm_response_mp[query] = "-1"
             continue
 

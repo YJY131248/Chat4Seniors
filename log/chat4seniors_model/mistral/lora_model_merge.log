@@ -1,0 +1,25 @@
+2025/05/13 01:06:10 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/13 01:06:10 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/13 01:06:10 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Mistral', llm_model_path='../model/base_models/Mistral-7B-Instruct-v0.2', peft_checkpoint_path='../out/chat4seniors_model/mistral_dpo_b0.5_lr1e-4_e5/checkpoint-4855/', merge_save_path='../model/chat4seniors_model/mistral', log_path='../log/chat4seniors_model/mistral/lora_model_merge.log')
+2025/05/13 01:06:12 - __main__ - INFO - 46 - lora_merge - Base LLMs Mistral load successfully! LLM path::: ../model/base_models/Mistral-7B-Instruct-v0.2
+2025/05/13 01:07:35 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/13 01:07:35 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/13 01:07:35 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Mistral', llm_model_path='../model/base_models/Mistral-7B-Instruct-v0.2', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-mistral/mistral_dpo_b0.5_lr1e-4_e5/checkpoint-4855/', merge_save_path='../model/chat4seniors_model/mistral', log_path='../log/chat4seniors_model/mistral/lora_model_merge.log')
+2025/05/13 01:07:37 - __main__ - INFO - 46 - lora_merge - Base LLMs Mistral load successfully! LLM path::: ../model/base_models/Mistral-7B-Instruct-v0.2
+2025/05/13 01:07:43 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpjfhjntvd/test.c -o /tmp/tmpjfhjntvd/test.o
+2025/05/13 01:07:43 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpjfhjntvd/test.o -laio -o /tmp/tmpjfhjntvd/a.out
+2025/05/13 01:07:44 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpi0behniy/test.c -o /tmp/tmpi0behniy/test.o
+2025/05/13 01:07:44 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpi0behniy/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmpi0behniy/a.out
+2025/05/13 01:08:07 - __main__ - INFO - 61 - lora_merge - Merge Model Mistral saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-mistral/mistral_dpo_b0.5_lr1e-4_e5/checkpoint-4855/! Merge Model path::: ../model/chat4seniors_model/mistral
+2025/05/18 22:21:32 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/18 22:21:32 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/18 22:21:32 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Mistral', llm_model_path='../model/base_models/mistral', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-mistral/mistral_dpo_b0.5_lr5e-5_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/mistral', log_path='../log/chat4seniors_model/mistral/lora_model_merge.log')
+2025/05/18 22:23:10 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/18 22:23:10 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/18 22:23:10 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Mistral', llm_model_path='../model/base_models/Mistral-7B-Instruct-v0.2', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-mistral/mistral_dpo_b0.5_lr5e-5_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/mistral', log_path='../log/chat4seniors_model/mistral/lora_model_merge.log')
+2025/05/18 22:23:12 - __main__ - INFO - 46 - lora_merge - Base LLMs Mistral load successfully! LLM path::: ../model/base_models/Mistral-7B-Instruct-v0.2
+2025/05/18 22:23:19 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpgel5cct7/test.c -o /tmp/tmpgel5cct7/test.o
+2025/05/18 22:23:19 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpgel5cct7/test.o -laio -o /tmp/tmpgel5cct7/a.out
+2025/05/18 22:23:20 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpn7kso44q/test.c -o /tmp/tmpn7kso44q/test.o
+2025/05/18 22:23:20 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpn7kso44q/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmpn7kso44q/a.out
+2025/05/18 22:23:42 - __main__ - INFO - 61 - lora_merge - Merge Model Mistral saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-mistral/mistral_dpo_b0.5_lr5e-5_e2/checkpoint-1942/! Merge Model path::: ../model/chat4seniors_model/mistral
