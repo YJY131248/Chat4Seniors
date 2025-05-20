@@ -1,0 +1,18 @@
+2025/05/14 00:17:17 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/14 00:17:17 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/14 00:17:17 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Yi', llm_model_path='../model/base_models/Yi-1.5-6B', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-yi/yi_dpo_b0.5_lr1e-4_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/yi', log_path='../log/chat4seniors_model/yi/lora_model_merge.log')
+2025/05/14 00:17:20 - __main__ - INFO - 46 - lora_merge - Base LLMs Yi load successfully! LLM path::: ../model/base_models/Yi-1.5-6B
+2025/05/14 00:17:26 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpainswvmb/test.c -o /tmp/tmpainswvmb/test.o
+2025/05/14 00:17:26 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpainswvmb/test.o -laio -o /tmp/tmpainswvmb/a.out
+2025/05/14 00:17:27 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpj9fha0jv/test.c -o /tmp/tmpj9fha0jv/test.o
+2025/05/14 00:17:27 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpj9fha0jv/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmpj9fha0jv/a.out
+2025/05/14 00:17:46 - __main__ - INFO - 61 - lora_merge - Merge Model Yi saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-yi/yi_dpo_b0.5_lr1e-4_e2/checkpoint-1942/! Merge Model path::: ../model/chat4seniors_model/yi
+2025/05/18 22:25:08 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/18 22:25:08 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/18 22:25:08 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Yi', llm_model_path='../model/base_models/Yi-1.5-6B', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-yi/yi_dpo_b0.5_lr1e-4_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/yi', log_path='../log/chat4seniors_model/yi/lora_model_merge.log')
+2025/05/18 22:25:10 - __main__ - INFO - 46 - lora_merge - Base LLMs Yi load successfully! LLM path::: ../model/base_models/Yi-1.5-6B
+2025/05/18 22:25:16 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpk1z1vw30/test.c -o /tmp/tmpk1z1vw30/test.o
+2025/05/18 22:25:16 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpk1z1vw30/test.o -laio -o /tmp/tmpk1z1vw30/a.out
+2025/05/18 22:25:17 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmp9zu5ko7j/test.c -o /tmp/tmp9zu5ko7j/test.o
+2025/05/18 22:25:17 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmp9zu5ko7j/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmp9zu5ko7j/a.out
+2025/05/18 22:27:45 - __main__ - INFO - 61 - lora_merge - Merge Model Yi saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-yi/yi_dpo_b0.5_lr1e-4_e2/checkpoint-1942/! Merge Model path::: ../model/chat4seniors_model/yi

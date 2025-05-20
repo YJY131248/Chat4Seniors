@@ -1,0 +1,26 @@
+2025/05/14 00:14:40 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/14 00:14:40 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/14 00:14:40 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Qwen', llm_model_path='../model/base_models/Qwen2.5-7B-Instruct', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-qwen/qwen_dpo_b0.5_lr1e-4_e2/checkpoint-4855/', merge_save_path='../model/chat4seniors_model/qwen', log_path='../log/chat4seniors_model/qwen/lora_model_merge.log')
+2025/05/14 00:14:43 - __main__ - INFO - 46 - lora_merge - Base LLMs Qwen load successfully! LLM path::: ../model/base_models/Qwen2.5-7B-Instruct
+2025/05/14 00:15:15 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/14 00:15:15 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/14 00:15:15 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Qwen', llm_model_path='../model/base_models/Qwen2.5-7B-Instruct', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-qwen/qwen_dpo_b0.5_lr1e-4_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/qwen', log_path='../log/chat4seniors_model/qwen/lora_model_merge.log')
+2025/05/14 00:15:18 - __main__ - INFO - 46 - lora_merge - Base LLMs Qwen load successfully! LLM path::: ../model/base_models/Qwen2.5-7B-Instruct
+2025/05/14 00:15:25 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmp8j3mizx5/test.c -o /tmp/tmp8j3mizx5/test.o
+2025/05/14 00:15:25 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmp8j3mizx5/test.o -laio -o /tmp/tmp8j3mizx5/a.out
+2025/05/14 00:15:26 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpdtj3ftjp/test.c -o /tmp/tmpdtj3ftjp/test.o
+2025/05/14 00:15:26 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpdtj3ftjp/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmpdtj3ftjp/a.out
+2025/05/14 00:15:50 - __main__ - INFO - 61 - lora_merge - Merge Model Qwen saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-qwen/qwen_dpo_b0.5_lr1e-4_e2/checkpoint-1942/! Merge Model path::: ../model/chat4seniors_model/qwen
+2025/05/18 22:21:35 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/18 22:21:35 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/18 22:21:35 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Qwen', llm_model_path='../model/base_models/Qwen2.5-7B-Instruct', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-qwen/qwen_dpo_b0.5_lr5e-5_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/qwen', log_path='../log/chat4seniors_model/qwen/lora_model_merge.log')
+2025/05/18 22:21:38 - __main__ - INFO - 46 - lora_merge - Base LLMs Qwen load successfully! LLM path::: ../model/base_models/Qwen2.5-7B-Instruct
+2025/05/18 22:23:46 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/18 22:23:46 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/18 22:23:46 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='Qwen', llm_model_path='../model/base_models/Qwen2.5-7B-Instruct', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-qwen/qwen_dpo_b0.5_lr5e-5_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/qwen', log_path='../log/chat4seniors_model/qwen/lora_model_merge.log')
+2025/05/18 22:23:49 - __main__ - INFO - 46 - lora_merge - Base LLMs Qwen load successfully! LLM path::: ../model/base_models/Qwen2.5-7B-Instruct
+2025/05/18 22:23:56 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmp3z29wo2o/test.c -o /tmp/tmp3z29wo2o/test.o
+2025/05/18 22:23:56 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmp3z29wo2o/test.o -laio -o /tmp/tmp3z29wo2o/a.out
+2025/05/18 22:23:57 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmp4hkkzvgu/test.c -o /tmp/tmp4hkkzvgu/test.o
+2025/05/18 22:23:57 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmp4hkkzvgu/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmp4hkkzvgu/a.out
+2025/05/18 22:24:21 - __main__ - INFO - 61 - lora_merge - Merge Model Qwen saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-qwen/qwen_dpo_b0.5_lr5e-5_e2/checkpoint-1942/! Merge Model path::: ../model/chat4seniors_model/qwen

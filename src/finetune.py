@@ -53,6 +53,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
             model = AutoModelForCausalLM.from_pretrained(
                 llm_model_path, 
                 low_cpu_mem_usage=True, 
+                device_map="auto",
                 torch_dtype=torch.float16
             )
             tokenizer = AutoTokenizer.from_pretrained(llm_model_path)
@@ -62,6 +63,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
             model = AutoModelForCausalLM.from_pretrained(
                 llm_model_path,
                 low_cpu_mem_usage=True,
+                device_map="auto",
                 torch_dtype=torch.float16
             )
             tokenizer = AutoTokenizer.from_pretrained(
@@ -77,6 +79,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
                 llm_model_path, 
                 low_cpu_mem_usage=True, 
                 torch_dtype=torch.float16,
+                device_map="auto",
                 trust_remote_code=True
             )
             tokenizer = AutoTokenizer.from_pretrained(llm_model_path, trust_remote_code=True)
@@ -85,6 +88,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
                 llm_model_path, 
                 low_cpu_mem_usage=True, 
                 torch_dtype=torch.float16,
+                device_map="auto",
                 trust_remote_code=True
             )
             tokenizer = AutoTokenizer.from_pretrained(
@@ -95,6 +99,7 @@ def get_llm_model_tokenizer(llm_model_name, llm_model_path, peft_type):
             model = AutoModelForCausalLM.from_pretrained(
                 llm_model_path, 
                 low_cpu_mem_usage=True, 
+                device_map="auto",
                 torch_dtype=torch.float16
             )
             tokenizer = AutoTokenizer.from_pretrained(llm_model_path)

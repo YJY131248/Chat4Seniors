@@ -1,0 +1,22 @@
+2025/05/14 00:16:35 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/14 00:16:35 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/14 00:16:35 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='BaiChuan', llm_model_path='../model/base_models/Baichuan2-7B-Base', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-baichuan/baichuan_dpo_b0.2_lr5e-5_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/baichuan', log_path='../log/chat4seniors_model/baichuan/lora_model_merge.log')
+2025/05/14 00:16:35 - transformers_modules.Baichuan2-7B-Base.modeling_baichuan - WARNING - 49 - modeling_baichuan - Xformers is not installed correctly. If you want to use memory_efficient_attention to accelerate training use the following command to install Xformers
+pip install xformers.
+2025/05/14 00:16:38 - __main__ - INFO - 46 - lora_merge - Base LLMs BaiChuan load successfully! LLM path::: ../model/base_models/Baichuan2-7B-Base
+2025/05/14 00:16:50 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmp54rpw_f8/test.c -o /tmp/tmp54rpw_f8/test.o
+2025/05/14 00:16:50 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmp54rpw_f8/test.o -laio -o /tmp/tmp54rpw_f8/a.out
+2025/05/14 00:16:50 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmpou5tqan5/test.c -o /tmp/tmpou5tqan5/test.o
+2025/05/14 00:16:50 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmpou5tqan5/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmpou5tqan5/a.out
+2025/05/14 00:17:13 - __main__ - INFO - 61 - lora_merge - Merge Model BaiChuan saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-baichuan/baichuan_dpo_b0.2_lr5e-5_e2/checkpoint-1942/! Merge Model path::: ../model/chat4seniors_model/baichuan
+2025/05/18 22:24:26 - __main__ - INFO - 36 - lora_merge - Arguments:
+2025/05/18 22:24:26 - __main__ - INFO - 37 - lora_merge - merge_model_args:
+2025/05/18 22:24:26 - __main__ - INFO - 38 - lora_merge - MergeModelArguments(peft_type='lora', llm_model_name='BaiChuan', llm_model_path='../model/base_models/Baichuan2-7B-Base', peft_checkpoint_path='../out/chat4seniors_model/gridsearch-baichuan/baichuan_dpo_b0.5_lr1e-4_e2/checkpoint-1942/', merge_save_path='../model/chat4seniors_model/baichuan', log_path='../log/chat4seniors_model/baichuan/lora_model_merge.log')
+2025/05/18 22:24:26 - transformers_modules.Baichuan2-7B-Base.modeling_baichuan - WARNING - 49 - modeling_baichuan - Xformers is not installed correctly. If you want to use memory_efficient_attention to accelerate training use the following command to install Xformers
+pip install xformers.
+2025/05/18 22:24:28 - __main__ - INFO - 46 - lora_merge - Base LLMs BaiChuan load successfully! LLM path::: ../model/base_models/Baichuan2-7B-Base
+2025/05/18 22:24:39 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmp7b5fpa80/test.c -o /tmp/tmp7b5fpa80/test.o
+2025/05/18 22:24:39 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmp7b5fpa80/test.o -laio -o /tmp/tmp7b5fpa80/a.out
+2025/05/18 22:24:40 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -c /tmp/tmp7uqkrk0b/test.c -o /tmp/tmp7uqkrk0b/test.o
+2025/05/18 22:24:40 - root - INFO - 38 - spawn - gcc -pthread -B /home/yaojinyu/miniconda3/envs/pytorch/compiler_compat -Wl,--sysroot=/ /tmp/tmp7uqkrk0b/test.o -L/usr/local/cuda -L/usr/local/cuda/lib64 -lcufile -o /tmp/tmp7uqkrk0b/a.out
+2025/05/18 22:25:04 - __main__ - INFO - 61 - lora_merge - Merge Model BaiChuan saved successfully! PEFT checkout path:::../out/chat4seniors_model/gridsearch-baichuan/baichuan_dpo_b0.5_lr1e-4_e2/checkpoint-1942/! Merge Model path::: ../model/chat4seniors_model/baichuan
