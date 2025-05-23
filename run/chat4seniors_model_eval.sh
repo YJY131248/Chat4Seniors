@@ -7,7 +7,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-mistral/eval_res_dpo.csv \
     --log_path ../log/chat4seniors_model/mistral/dpo_model_eval.log \
     --use_peft_model False\
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -22,7 +22,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-mistral/eval_res_hf.csv \
     --log_path ../log/chat4seniors_model/mistral/hf_model_eval.log \
     --use_peft_model False \
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -38,7 +38,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-qwen/eval_res_dpo.csv \
     --log_path ../log/chat4seniors_model/qwen/dpo_model_eval.log \
     --use_peft_model False\
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -53,7 +53,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-qwen/eval_res_hf.csv \
     --log_path ../log/chat4seniors_model/qwen/hf_model_eval.log \
     --use_peft_model False \
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -69,7 +69,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-llama/eval_res_dpo.csv \
     --log_path ../log/chat4seniors_model/llama/dpo_model_eval.log \
     --use_peft_model False\
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -84,7 +84,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-llama/eval_res_hf.csv \
     --log_path ../log/chat4seniors_model/llama/hf_model_eval.log \
     --use_peft_model False \
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -100,7 +100,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-baichuan/eval_res_dpo.csv \
     --log_path ../log/chat4seniors_model/baichuan/dpo_model_eval.log \
     --use_peft_model False\
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -115,7 +115,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-baichuan/eval_res_hf.csv \
     --log_path ../log/chat4seniors_model/baichuan/hf_model_eval.log \
     --use_peft_model False \
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -131,7 +131,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-yi/eval_res_dpo.csv \
     --log_path ../log/chat4seniors_model/yi/dpo_model_eval.log \
     --use_peft_model False\
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
@@ -146,7 +146,7 @@ python3 ../src/evaluate.py \
     --save_eval_res_path ../out/chat4seniors_model/gridsearch-yi/eval_res_hf.csv \
     --log_path ../log/chat4seniors_model/yi/hf_model_eval.log \
     --use_peft_model False \
-    --max_new_tokens 1024 \
+    --max_new_tokens 512 \
     --do_sample False \
     --top_p 0.9 \
     --temperature 0.7 \
