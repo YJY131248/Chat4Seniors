@@ -26,7 +26,7 @@ python3 ../src/lora_merge.py \
     --peft_type lora \
     --llm_model_name BaiChuan \
     --llm_model_path ../model/base_models/Baichuan2-7B-Base \
-    --peft_checkpoint_path ../out/chat4seniors_model/gridsearch-baichuan/baichuan_dpo_b0.5_lr1e-4_e2/checkpoint-1942/ \
+    --peft_checkpoint_path ../out/chat4seniors_model/gridsearch-baichuan/baichuan_dpo_b0.2_lr5e-5_e2/checkpoint-1942/ \
     --merge_save_path ../model/chat4seniors_model/baichuan \
     --log_path ../log/chat4seniors_model/baichuan/lora_model_merge.log
 

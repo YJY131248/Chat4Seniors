@@ -52,7 +52,7 @@ def compute_metrics(
     # QA task
     elif task_type == "qa":
         # Filter out empty strings
-        def truncate_to_token_limit(text, tokenizer, max_tokens=1000):
+        def truncate_to_token_limit(text, tokenizer, max_tokens=500):
             encoded = tokenizer.encode_plus(
                 text,
                 max_length=max_tokens,
@@ -61,7 +61,7 @@ def compute_metrics(
             )
             return tokenizer.decode(encoded["input_ids"][0], skip_special_tokens=True)
 
-        tokenizer = AutoTokenizer.from_pretrained("../model/base_models/deberta-v3-large")
+        tokenizer = AutoTokenizer.from_pretrained("../model/base_models/roberta-large")
         preds = [truncate_to_token_limit(p, tokenizer) for p in preds]
         refs = [[truncate_to_token_limit(r, tokenizer)] for r in labels]
 
@@ -91,8 +91,8 @@ def compute_metrics(
         # BERTScore Calculation
         P, R, F1 = score(
             preds, [r[0] for r in refs], 
-            model_type="../model/base_models/deberta-v3-large", 
-            num_layers=12, lang="en", verbose=True, device="cuda:1"
+            model_type="../model/base_models/roberta-large", 
+            num_layers=17, lang="en", verbose=True, device="cuda:1", batch_size=16
         )
         bert_score_precision = np.mean(P.numpy())
         bert_score_recall = np.mean(R.numpy())
