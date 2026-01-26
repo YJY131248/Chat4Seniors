@@ -1,4 +1,5 @@
 model/
+paper/
 out/**/checkpoint-**
 out/**/runs/**
 src/__pycache__/
