@@ -18,7 +18,7 @@ pip install nvidia-ml-py==11.495.46
 # install model
 pip install modelscope
 modelscope download --model Qwen/Qwen2.5-7B-Instruct --local_dir /devdata/yaojinyu/Chat4Seniors/model/base_models/Qwen2.5-7B-Instruct
-W
+
 # train
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 export PYTORCH_NVML_BASED_CUDA_CHECK=0

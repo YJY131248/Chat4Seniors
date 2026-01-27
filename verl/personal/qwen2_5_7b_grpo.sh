@@ -33,6 +33,7 @@ python3 -m verl.trainer.main_ppo \
     trainer.logger='["console","tensorboard"]' \
     trainer.project_name='verl_grpo_chat4seniors_qwen2_5_7b' \
     trainer.experiment_name='chat4seniors_qwen2_5_7b' \
+    trainer.default_local_dir=/devdata/yaojinyu/Chat4Seniors/model/chat4seniors_rlvr_model/qwen \
     trainer.n_gpus_per_node=4 \
     trainer.nnodes=1 \
     trainer.save_freq=30 \
