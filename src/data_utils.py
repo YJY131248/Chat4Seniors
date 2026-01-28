@@ -45,6 +45,21 @@ def get_dpo_dataset(path, test_size=0.1):
     dataset = dataset.train_test_split(test_size=test_size, seed=42)
     return dataset
 
+def get_qa_dataset(json_path: str):
+    with open(json_path, "r", encoding="utf-8") as f:
+        raw_data = json.load(f)
+    data = {
+        "prompt": [],
+        "chosen": [],
+        "level": [],
+    }
+    for item in raw_data:
+        data["prompt"].append(item["prompt"][0]["content"])
+        data["chosen"].append(item["reward_model"]["ground_truth"]["chosen"])
+        data["level"].append(item["reward_model"]["ground_truth"]["level"])
+    dataset = Dataset.from_dict(data)
+    return dataset
+
 def get_tokenizer_finetune_dataset(
     dataset, 
     tokenizer,
