@@ -1,12 +1,12 @@
-import json
 import os
-import re
+import json
 import random
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 from tqdm import tqdm
+
 
 def get_cognitive_level(prompt_text):
     """
@@ -23,6 +23,7 @@ def get_cognitive_level(prompt_text):
         # Default or Unknown
         return '0'
 
+
 def build_rlvr_dataset(input_json_path, output_json_path):
     print(f"Loading data from {input_json_path}...")
     try:
@@ -35,10 +36,9 @@ def build_rlvr_dataset(input_json_path, output_json_path):
     print(f"Found {len(data)} entries. Processing for GRPO...")
     
     grpo_dataset = []
-    
     max_prompt_length, max_response_length = 0, 0
     total_length_list = []
-    for entry in tqdm(data, desc="Processing"):
+    for idx, entry in tqdm(enumerate(data), desc="Processing"):
         prompt_text = entry.get('prompt', '')
         chosen_text = entry.get('chosen', '')
         max_prompt_length = max(max_prompt_length, len(prompt_text.split()))
@@ -55,8 +55,18 @@ def build_rlvr_dataset(input_json_path, output_json_path):
         }
         
         grpo_dataset.append({
-            'prompt': prompt_text,
-            'ground_truth': gt_data
+            "data_source": "dpo_trainset",
+            'prompt': [
+                {
+                    "role": "user",
+                    "content": prompt_text
+                }
+            ],
+            "reward_model": {
+                "ground_truth": gt_data,
+                "style": "rule"
+            },
+            "idx": f"{idx+1}"
         })
     
     # Length distribution
@@ -79,18 +89,25 @@ def build_rlvr_dataset(input_json_path, output_json_path):
 
     print(f"Saving JSON to {output_json_path}...")
     os.makedirs(os.path.dirname(output_json_path), exist_ok=True)
-    
     with open(output_json_path, 'w', encoding='utf-8') as f:
         json.dump(grpo_dataset, f, ensure_ascii=False, indent=2)
-        
     print("Done! Saved as JSON.")
 
     # json -> parquet (optional)
     try:
+        random.seed(777)
         random.shuffle(grpo_dataset)
         trainset = grpo_dataset[:int(0.9*len(grpo_dataset))]
         valset = grpo_dataset[int(0.9*len(grpo_dataset)):]
 
+        # save json
+        with open(output_json_path.replace('.json', '_train.json'), 'w', encoding='utf-8') as f:
+            json.dump(trainset, f, ensure_ascii=False, indent=2)
+        with open(output_json_path.replace('.json', '_val.json'), 'w', encoding='utf-8') as f:
+            json.dump(valset, f, ensure_ascii=False, indent=2)
+        print("Saved train/val JSON files.")
+
+        # save parquet
         trainset_df = pd.DataFrame(trainset)
         valset_df = pd.DataFrame(valset)
         pq.write_table(pa.Table.from_pandas(trainset_df), output_json_path.replace('.json', '_train.parquet'))
@@ -102,12 +119,5 @@ def build_rlvr_dataset(input_json_path, output_json_path):
 
 if __name__ == "__main__":
     input_path = "../data/trainset/chat4seniors_dpo_trainset.json"
-    output_path = "../data/trainset/chat4seniors_rlvr_grpo.json"
-    
-    # Ensure relative paths work if run from src/
-    if not os.path.exists(input_path):
-        # try running from root
-        input_path = "data/trainset/chat4seniors_dpo_trainset.json"
-        output_path = "data/trainset/chat4seniors_rlvr_grpo.json"
-        
+    output_path = "../data/trainset/chat4seniors_rlvr_grpo.json"        
     build_rlvr_dataset(input_path, output_path)

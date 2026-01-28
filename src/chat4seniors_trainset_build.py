@@ -3,7 +3,7 @@ import random
 from tqdm import tqdm
 from typing import List
 from adaptive_prompt_router import AdaptivePromptRouter
-from llm_api_service import get_ark_volcenging_llm_resp, get_pos_neg_resp_pair
+from llm_api_service import get_ds_llm_response, get_pos_neg_resp_pair
 from inference import get_peft_llm_model_tokenizer, get_llm_response
 import warnings
 warnings.filterwarnings("ignore")
@@ -39,7 +39,7 @@ def dataset_filter(ipt_json_path: str, opt_json_path: str):
                     if len(info["text"]) <= 20:
                         continue
                     # get user congitive ability
-                    cr = get_llm_response(
+                    cr = get_ds_llm_response(
                         [info["text"]], llm_model, llm_tokenizer, 
                         max_new_tokens=5, 
                         top_p=0.1, 
@@ -78,7 +78,7 @@ def generate_multiturn_dialog(dialogs: List[dict], max_turn: int = 10):
     # get top-(N-1) dialogs
     while len(apr.dialogs) < max_turn - 1:
         prompt = apr.generate_prompt()
-        assistant_r1_resp = get_ark_volcenging_llm_resp(prompt=prompt, endpoint_id="ep-2025hahahahaha")
+        assistant_r1_resp = get_llm_response(prompt=prompt, endpoint_id="ep-2025hahahahaha")
         role = "assistant" if apr.dialogs[-1]["role"] == "user" else "user"
         resp_text = llm_resp_post_process(assistant_r1_resp["answer_response"])
         assistant_r1_resp = {
@@ -179,15 +179,22 @@ def dpo_trainset_format_convert_from_sharegpt_to_default(ipt_json_path: str, opt
 
 
 def build_dpo_hf_eval_dataset():
-    with open("../data/trainset/chat4seniors_dpo_trainset.json", "r") as f:
+    with open("../data/trainset/chat4seniors_rlvr_grpo_val.json", "r") as f:
         data = json.load(f)
     save_data = []
     for item in data:
-        prompt = "'# Context\n'" + item["prompt"].split('# Context\n')[1]
+        prompt = "'# Context\n'" + item["prompt"][0]["content"].split('# Context\n')[1]
         save_data.append({
-            "prompt": prompt,
-            "chosen": item["chosen"],
-            "rejected": item["rejected"]
+            "prompt": [
+                {"role": "user", "content": prompt}
+            ],
+            "reward_model": {
+                "ground_truth": {
+                    "chosen": item["reward_model"]["ground_truth"]["chosen"],
+                    "level": item["reward_model"]["ground_truth"]["level"]
+                },
+                "style": "rule"
+            },
         })
     # save data
     with open("../data/trainset/chat4seniors_dpo_trainset_hf_eval.json", "w") as f:

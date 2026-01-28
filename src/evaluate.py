@@ -3,6 +3,8 @@ import logging
 import warnings
 import numpy as np
 import pandas as pd
+import re
+import statistics
 from nltk.translate.bleu_score import corpus_bleu
 from nltk.translate.meteor_score import meteor_score
 from rouge_score import rouge_scorer
@@ -11,7 +13,7 @@ from typing import List
 from dataclasses import dataclass, field
 from transformers import HfArgumentParser, AutoTokenizer
 from sklearn.metrics import classification_report
-from data_utils import get_alpaca_dataset, get_dpo_dataset
+from data_utils import get_alpaca_dataset, get_qa_dataset
 from inference import get_peft_llm_model_tokenizer, get_llm_response
 
 # set merge model arguments
@@ -51,6 +53,40 @@ def compute_metrics(
 
     # QA task
     elif task_type == "qa":
+        def analyze_text_complexity(text):
+            sentences = re.split(r'[.!?]+', text)
+            sentences = [s.strip() for s in sentences if s.strip()]
+            num_sentences = len(sentences)
+            num_words = len(text.split())
+            # Avoid division by zero
+            avg_sentence_len = num_words / num_sentences if num_sentences > 0 else 0
+            question_count = text.count('?')
+            supportive_phrases = ["no rush", "take your time", "step by step", "don't worry", "that's okay", "perfectly fine", "let's check", "let's try"]
+            support_score = sum(1 for phrase in supportive_phrases if phrase in text.lower())
+            context_keywords = ["morning", "afternoon", "evening", "sunny", "cloudy", "rainy", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+            context_score = sum(1 for word in context_keywords if word in text.lower())
+            return {
+                'sentence_count': num_sentences,
+                'avg_sentence_len': avg_sentence_len,
+                'question_count': question_count,
+                'support_score': support_score,
+                'context_score': context_score
+            }
+
+        # Calculate complexity metrics for preds and refs
+        pred_metrics_list = [analyze_text_complexity(p) for p in preds]
+        ref_metrics_list = [analyze_text_complexity(l) for l in labels]
+        complexity_keys = ['avg_sentence_len', 'question_count', 'support_score', 'context_score']
+        complexity_scores = {}
+        for key in complexity_keys:
+            # Calculate average for preds
+            mean_pred = statistics.mean([m[key] for m in pred_metrics_list]) if pred_metrics_list else 0
+            # Calculate average for refs (labels)
+            mean_ref = statistics.mean([m[key] for m in ref_metrics_list]) if ref_metrics_list else 0
+            complexity_scores[f"pred_{key}"] = mean_pred
+            complexity_scores[f"ref_{key}"] = mean_ref
+            complexity_scores[f"diff_{key}"] = mean_pred - mean_ref
+
         # Filter out empty strings
         def truncate_to_token_limit(text, tokenizer, max_tokens=500):
             encoded = tokenizer.encode_plus(
@@ -107,6 +143,7 @@ def compute_metrics(
             "bert_score_precision": bert_score_precision,
             "bert_score_recall": bert_score_recall,
             "bert_score_f1": bert_score_f1,
+            **complexity_scores
         }
 
     else:
@@ -136,8 +173,7 @@ def main():
 
     # load the dataset and tokenizer dataset
     # dataset = get_alpaca_dataset(eval_args.dataset_path, test_size=0.1)  # SFT
-    dataset = get_dpo_dataset(eval_args.dataset_path, test_size=0.1)     # DPO
-    dataset = dataset['test']
+    dataset = get_qa_dataset(eval_args.dataset_path)  # qa(dpo & grpo)
     logger.info('dataset build successfully!')
 
     # get llm resp
@@ -153,8 +189,8 @@ def main():
 
     # get llm resp
     # query_list = [sample['instruction'] for sample in dataset]   # SFT
-    query_list = [sample['prompt'] for sample in dataset]     # DPO
-    # query_list = query_list[:10]
+    query_list = [sample['prompt'] for sample in dataset]     # DPO & grpo (qa)
+    # query_list = query_list[:2]  # for test
     llm_response_mp = get_llm_response(
         query_list=query_list,
         model = llm_model,
@@ -168,7 +204,7 @@ def main():
     preds = [llm_response_mp[query] for query in query_list]
     # labels = [sample['output'] for sample in dataset]   # SFT
     labels = [sample['chosen'] for sample in dataset]  # DPO
-    # labels = labels[:10]
+    # labels = labels[:2]
     logger.info('LLMs {} get response successfully!'.format(eval_args.llm_model_name))
     logger.info('pred::: {}\nlabels::: {}'.format(preds, labels))
     
