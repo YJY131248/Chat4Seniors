@@ -3,7 +3,7 @@ import random
 from tqdm import tqdm
 from typing import List
 from adaptive_prompt_router import AdaptivePromptRouter
-from llm_api_service import get_llm_response, get_pos_neg_resp_pair
+from llm_api_service import get_ds_llm_response, get_pos_neg_resp_pair
 from inference import get_peft_llm_model_tokenizer, get_llm_response
 import warnings
 warnings.filterwarnings("ignore")
@@ -39,7 +39,7 @@ def dataset_filter(ipt_json_path: str, opt_json_path: str):
                     if len(info["text"]) <= 20:
                         continue
                     # get user congitive ability
-                    cr = get_llm_response(
+                    cr = get_ds_llm_response(
                         [info["text"]], llm_model, llm_tokenizer, 
                         max_new_tokens=5, 
                         top_p=0.1, 

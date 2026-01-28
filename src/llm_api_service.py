@@ -9,8 +9,8 @@ client = OpenAI(
     api_key=os.environ.get('DEEPSEEK_API_KEY')
 )
 
-# Ark Volcenging API
-def get_llm_response(prompt: str, model_name: str="deepseek-chat", **kwargs)-> dict:
+# Openai Deepseek API
+def get_ds_llm_response(prompt: str, model_name: str="deepseek-chat", **kwargs)-> dict:
     messages = [{"role": "user", "content": prompt}]
     default_llm_params = {
         "temperature": 0.7,
@@ -42,7 +42,7 @@ def get_llm_response(prompt: str, model_name: str="deepseek-chat", **kwargs)-> d
 
 # multiprocessing
 def get_parallel_llm_resp(prompt: str, result_dict: dict, key: str, endpoint_id: str = "", **kwargs)-> dict:
-    result_dict[key] = get_llm_response(prompt=prompt, endpoint_id=endpoint_id, **kwargs)
+    result_dict[key] = get_ds_llm_response(prompt=prompt, endpoint_id=endpoint_id, **kwargs)
 
 # DPO pos & neg pair data
 def get_pos_neg_resp_pair(pos_prompt: str, neg_prompt: str) -> Tuple[str, str]:
