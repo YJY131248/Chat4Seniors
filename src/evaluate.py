@@ -9,7 +9,7 @@ from nltk.translate.bleu_score import corpus_bleu
 from nltk.translate.meteor_score import meteor_score
 from rouge_score import rouge_scorer
 from bert_score import score
-from typing import List
+from typing import List, Optional
 from dataclasses import dataclass, field
 from transformers import HfArgumentParser, AutoTokenizer
 from sklearn.metrics import classification_report
@@ -38,7 +38,8 @@ class EvalArguments:
 def compute_metrics(
     preds: List[str],
     labels: List[str],
-    task_type: str
+    levels: Optional[List[int]] = None,
+    task_type: str = "classification"
 ):
     # Classification task
     if task_type == "classification":
@@ -53,7 +54,7 @@ def compute_metrics(
 
     # QA task
     elif task_type == "qa":
-        def analyze_text_complexity(text):
+        def compute_cognition_metrics(text):
             sentences = re.split(r'[.!?]+', text)
             sentences = [s.strip() for s in sentences if s.strip()]
             num_sentences = len(sentences)
@@ -70,22 +71,36 @@ def compute_metrics(
                 'avg_sentence_len': avg_sentence_len,
                 'question_count': question_count,
                 'support_score': support_score,
-                'context_score': context_score
+                'context_score': context_score,
             }
 
+        def compute_cognition_mean_metrics(metrics_list, prefix=None):
+            scores = {}
+            complexity_keys = ['avg_sentence_len', 'question_count', 'support_score', 'context_score']
+            for key in complexity_keys:
+                mean_val = statistics.mean([m[key] for m in metrics_list])
+                scores[f"{prefix}_{key}"] = mean_val
+            return scores
+
         # Calculate complexity metrics for preds and refs
-        pred_metrics_list = [analyze_text_complexity(p) for p in preds]
-        ref_metrics_list = [analyze_text_complexity(l) for l in labels]
-        complexity_keys = ['avg_sentence_len', 'question_count', 'support_score', 'context_score']
-        complexity_scores = {}
-        for key in complexity_keys:
-            # Calculate average for preds
-            mean_pred = statistics.mean([m[key] for m in pred_metrics_list]) if pred_metrics_list else 0
-            # Calculate average for refs (labels)
-            mean_ref = statistics.mean([m[key] for m in ref_metrics_list]) if ref_metrics_list else 0
-            complexity_scores[f"pred_{key}"] = mean_pred
-            complexity_scores[f"ref_{key}"] = mean_ref
-            complexity_scores[f"diff_{key}"] = mean_pred - mean_ref
+        pred_cognition0_metrics_list = []
+        pred_cognition1_metrics_list = []
+        pred_cognition2_metrics_list = []
+        for pred_text, level in zip(preds, levels):
+            pred_cognition_metrics = compute_cognition_metrics(str(pred_text))
+            if int(level) == 0:
+                pred_cognition0_metrics_list.append(pred_cognition_metrics)
+            elif int(level) == 1:
+                pred_cognition1_metrics_list.append(pred_cognition_metrics)
+            elif int(level) == 2:
+                pred_cognition2_metrics_list.append(pred_cognition_metrics)
+        pred_cognition_metrics = {}
+        pred_cognition0_metrics = compute_cognition_mean_metrics(pred_cognition0_metrics_list, prefix="level0")  
+        pred_cognition1_metrics = compute_cognition_mean_metrics(pred_cognition1_metrics_list, prefix="level1")  
+        pred_cognition2_metrics = compute_cognition_mean_metrics(pred_cognition2_metrics_list, prefix="level2")
+        pred_cognition_metrics.update(pred_cognition0_metrics)
+        pred_cognition_metrics.update(pred_cognition1_metrics)
+        pred_cognition_metrics.update(pred_cognition2_metrics)
 
         # Filter out empty strings
         def truncate_to_token_limit(text, tokenizer, max_tokens=500):
@@ -143,7 +158,7 @@ def compute_metrics(
             "bert_score_precision": bert_score_precision,
             "bert_score_recall": bert_score_recall,
             "bert_score_f1": bert_score_f1,
-            **complexity_scores
+            **pred_cognition_metrics
         }
 
     else:
@@ -203,8 +218,8 @@ def main():
     )
     preds = [llm_response_mp[query] for query in query_list]
     # labels = [sample['output'] for sample in dataset]   # SFT
-    labels = [sample['chosen'] for sample in dataset]  # DPO
-    # labels = labels[:2]
+    labels = [sample['chosen'] for sample in dataset]  # DPO & grpo (qa)
+    levels = [sample['level'] for sample in dataset]  # DPO & grpo (qa)
     logger.info('LLMs {} get response successfully!'.format(eval_args.llm_model_name))
     logger.info('pred::: {}\nlabels::: {}'.format(preds, labels))
     
@@ -213,7 +228,8 @@ def main():
     os.makedirs(dir_path, exist_ok=True)
     infer_df = pd.DataFrame({
         "preds": preds,
-        "labels": labels
+        "labels": labels,
+        "levels": levels
     })
     infer_df.to_csv(eval_args.save_eval_res_path, index=False)
     logger.info('preds and labels save successfully! save path::: {}'.format(eval_args.save_eval_res_path))
@@ -222,6 +238,7 @@ def main():
     eval_metrics = compute_metrics(
         preds=preds,
         labels=labels,
+        levels=levels,
         task_type=eval_args.task_type,
     )
     print(eval_metrics)
