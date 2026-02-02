@@ -87,12 +87,10 @@ def get_text_metrics(text: str) -> Dict[str, Union[float, int, bool]]:
 def calculate_language_complexity_score(avg_len: float, num_words: int, level: int) -> float:
     score = 0.0        
     if level == 1:
-        # 轻度障碍：鼓励简洁但完整
         if avg_len > 50:
             score -= 1.0
             
     elif level == 2:
-        # 中重度障碍：必须极简
         if avg_len > 30:
             score -= 1.0 
     
@@ -184,9 +182,6 @@ def compute_score(
     ground_truth: Union[Dict, Any],
     extra_info: Optional[Dict[str, Any]] = None
 ) -> float:
-    """
-    综合评分函数
-    """
     level = 0
     if isinstance(ground_truth, dict):
         level = int(ground_truth.get('level', 0))
