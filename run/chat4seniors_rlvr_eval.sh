@@ -1,0 +1,14 @@
+python3 ../src/evaluate.py \
+    --peft_type lora \
+    --task_type qa \
+    --llm_model_name Qwen \
+    --llm_model_path ../model/chat4seniors_rlvr_model/qwen3_8b \
+    --dataset_path ../data/trainset/chat4seniors_rlvr_grpo_val.json \
+    --save_eval_res_path ../out/chat4seniors_rlvr_model/eval/qwen3_8b/eval_res_rlvr_grpo.csv \
+    --log_path ../log/chat4seniors_rlvr_model/qwen3_8b/rlvr_grpo_model_eval.log \
+    --use_peft_model False\
+    --max_new_tokens 1024 \
+    --do_sample False \
+    --top_p 0.9 \
+    --temperature 0.7 \
+    --repetition_penalty 1.2

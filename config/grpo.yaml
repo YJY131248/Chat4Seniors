@@ -1,0 +1,105 @@
+### method
+stage: grpo
+finetuning_type: full
+
+### dataset
+cutoff_len: 4096
+dataloader_num_workers: 1
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-6
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+
+### eval
+val_size: 0.1
+output_dir: /devdata/yaojinyu/chat4seniors/out/chat4seniors_rlvr_model/qwen3-8b/checkpoint/
+
+
+verl_platform_config:
+  base_info:
+    model_name: qwen3_8b_rlvr_grpo_cs_0129 # change this
+  datasets:
+  - format: verl_platform
+    # data_template: "{prompt}"
+    path: "/devdata/yaojinyu/chat4seniors/data/trainset/chat4seniors_rlvr_grpo_train.json"  # change this based on the actual situation
+    type: local
+  deepspeed:
+    offload: true
+    zero_stage: -1
+  models:
+    train_model:
+      model_name: QWEN3-8B
+      source: local
+      local_path: /devdata/yaojinyu/chat4seniors/model/base_models/QWEN3-8B
+  num_gpu: 4
+  num_machines: 1
+  upload:
+    register:
+      register_to_library: false
+      strategy: epoch
+      register_epochs: 1
+
+  other_params:
+    grpo_param:
+      ### grpo 特有train参数
+      data:
+        prompt_key: prompt
+        max_prompt_length: 2048
+        max_response_length: 1024
+        filter_overlong_prompts: true
+
+      actor_rollout_ref:
+        model:
+            custom_chat_template: null
+            enable_gradient_checkpointing: true
+            enable_activation_offload: false
+            use_liger: false
+            use_fused_kernels: false
+            use_remove_padding: true
+        actor:
+          ulysses_sequence_parallel_size: 1
+          use_fused_kernels: false
+          clip_ratio: 0.2
+          kl_loss_coef: 0.001
+          fsdp_config:
+            forward_prefetch: false
+            fsdp_size: -1
+            offload_policy: true
+            optimizer_offload: true
+            param_offload: false
+            reshard_after_forward: true
+
+        rollout:
+          name: vllm
+          n: 5
+          prompt_length: 2048
+          response_length: 1024
+          temperature: 1.0
+          do_sample: true
+          top_k: -1
+          top_p: 0.95
+          gpu_memory_utilization: 0.3
+          enforce_eager: true
+          enable_chunked_prefill: false
+          tensor_model_parallel_size: 4
+          dtype: bfloat16
+          free_cache_engine: true
+
+          log_prob_max_token_len_per_gpu: 3072
+          log_prob_use_dynamic_bsz: false
+          max_model_len: null
+          max_num_batched_tokens: 3072
+          max_num_seqs: 512
+          mode: sync
+          multi_stage_wake_up: false
+
+          val_kwargs:
+            top_p: 0.1
+            temperature: 0.1
+
+      trainer:
+        logger: ['console', 'tensorboard']
